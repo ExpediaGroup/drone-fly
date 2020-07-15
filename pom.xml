@@ -144,25 +144,10 @@
             </to>
             <container>
               <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
-              <entrypoint>/bin/startup.sh</entrypoint>
-              <!-- <ports>
+              <ports>
                 <port>${docker.container.port}</port>
-                </ports> -->
+              </ports>
             </container>
-            <extraDirectories>
-              <paths>
-                <path>
-                  <from>./src/main/scripts</from>
-                  <into>/bin</into>
-                </path>
-              </paths>
-              <permissions>
-                <permission>
-                  <file>/bin/startup.sh</file>
-                  <mode>755</mode>
-                </permission>
-              </permissions>
-            </extraDirectories>
           </configuration>
         </plugin>
         <plugin>

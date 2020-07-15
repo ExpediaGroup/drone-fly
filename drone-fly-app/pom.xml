@@ -14,6 +14,7 @@
     <aws.version>1.11.532</aws.version>
     <s3mock.version>0.2.5</s3mock.version>
     <hive.version>2.3.7</hive.version>
+    <docker.container.port>8008</docker.container.port>
   </properties>
 
   <dependencies>
