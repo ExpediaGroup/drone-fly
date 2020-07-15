@@ -40,7 +40,7 @@ Drone Fly uses the Jib plugin which will build a docker image during the `packag
 	docker run --env APIARY_BOOTSTRAPSERVERS="localhost:9092" \
 			   --env APIARY_LISTENER_LIST="com.expediagroup.sampleListener1,com.expediagroup.sampleListener2" \
 			   --env APIARY_KAFKA_TOPICNAME="dronefly" \
-			   -it expediagroup/drone-fly-app:<image-version>
+			   expediagroup/drone-fly-app:<image-version>
 	
 The properties `apiary.bootstrapservers`, `apiary.kafka.topicname` and `apiary.listener.list` can also be provided in the spring properties file.
 	
