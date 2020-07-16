@@ -28,6 +28,14 @@
     <logback.version>1.2.3</logback.version>
     <maven.shade.plugin.version>3.2.4</maven.shade.plugin.version>
     <jib.maven.plugin.version>2.4.0</jib.maven.plugin.version>
+    <docker.from.image>openjdk</docker.from.image>
+    <docker.from.tag>8-jdk</docker.from.tag>
+    <docker.from.reference>${docker.from.image}:${docker.from.tag}</docker.from.reference>
+    <docker.registry>expediagroup</docker.registry>
+    <docker.to.image>${project.artifactId}</docker.to.image>
+    <docker.to.reference>${dockerhub.url}/${docker.registry}/${docker.to.image}:${docker.to.tag}</docker.to.reference>
+    <docker.to.tag>${project.version}</docker.to.tag>
+    <dockerhub.url>docker.io</dockerhub.url>
   </properties>
 
   <dependencyManagement>
@@ -104,14 +112,48 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-shade-plugin</artifactId>
-          <version>${maven.shade.plugin.version}</version>
-        </plugin>
-        <plugin>
           <groupId>com.google.cloud.tools</groupId>
           <artifactId>jib-maven-plugin</artifactId>
           <version>${jib.maven.plugin.version}</version>
+          <executions>
+            <execution>
+              <id>deploy</id>
+              <phase>deploy</phase>
+              <goals>
+                <goal>build</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>package</id>
+              <phase>package</phase>
+              <goals>
+                <goal>dockerBuild</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <from>
+              <image>${docker.from.reference}</image>
+            </from>
+            <to>
+              <image>${docker.to.reference}</image>
+              <auth>
+                <username>${DOCKERHUB_USERNAME}</username>
+                <password>${DOCKERHUB_PASSWORD}</password>
+              </auth>
+            </to>
+            <container>
+              <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
+              <ports>
+                <port>${docker.container.port}</port>
+              </ports>
+            </container>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-shade-plugin</artifactId>
+          <version>${maven.shade.plugin.version}</version>
         </plugin>
         <plugin>
           <groupId>com.mycila</groupId>

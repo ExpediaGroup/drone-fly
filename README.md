@@ -26,13 +26,23 @@ The Drone Fly image will be used as a base image by downstream projects which ne
 
 Drone Fly uses the Jib plugin which will build a docker image during the `package` phase. The image can also be built directly:
 
-    mvn compile com.google.cloud.tools:jib-maven-plugin:dockerBuild -pl drone-fly-app
+    mvn compile jib:dockerBuild -pl drone-fly-app
     
 # Running DroneFly
 
-	java -Dloader.path=lib/ -jar drone-fly-app-<version>-exec.jar --apiary.bootstrapservers=localhost:9092 --apiary.kafka.topicname=apiary
+	java -Dloader.path=lib/ -jar drone-fly-app-<version>-exec.jar \
+		--apiary.bootstrapservers=localhost:9092 \
+		--apiary.kafka.topicname=apiary \
+		--apiary.listener.list="com.expediagroup.sampleListener1,com.expediagroup.sampleListener2"
 	
-The properties `apiary.bootstrapservers` and `apiary.kafka.topicname` can also be provided in the spring properties file.
+# Running DroneFly Docker image
+
+	docker run --env APIARY_BOOTSTRAPSERVERS="localhost:9092" \
+			   --env APIARY_LISTENER_LIST="com.expediagroup.sampleListener1,com.expediagroup.sampleListener2" \
+			   --env APIARY_KAFKA_TOPICNAME="dronefly" \
+			   expediagroup/drone-fly-app:<image-version>
+	
+The properties `apiary.bootstrapservers`, `apiary.kafka.topicname` and `apiary.listener.list` can also be provided in the spring properties file.
 	
 	java -Dloader.path=lib/ -jar drone-fly-app-<version>-exec.jar --spring.config.location=file:///dronefly.properties
 
@@ -40,4 +50,5 @@ The properties `apiary.bootstrapservers` and `apiary.kafka.topicname` can also b
 This project is available under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 Copyright 2020 Expedia, Inc.
+
 
