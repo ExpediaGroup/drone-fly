@@ -22,6 +22,8 @@ import org.apache.hadoop.hive.metastore.api.MetaException;
 import org.apache.hadoop.hive.metastore.api.NoSuchObjectException;
 import org.apache.hadoop.hive.metastore.events.ListenerEvent;
 import org.apache.hadoop.hive.metastore.messaging.EventMessage.EventType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +34,7 @@ import com.expediagroup.dataplatform.dronefly.core.exception.DroneFlyException;
 
 @Component
 public class DroneFlyNotificationService {
+  private static final Logger log = LoggerFactory.getLogger(DroneFlyNotificationService.class);
   private final MessageReaderAdapter reader;
   private final HiveEventConverterService converterService;
   private final ListenerCatalog listenerCatalog;
@@ -50,7 +53,8 @@ public class DroneFlyNotificationService {
     try {
       ApiaryListenerEvent event = reader.read();
       ListenerEvent hiveEvent = converterService.toHiveEvent(event);
-
+      log.info("Read event: %s", event.getEventType().toString());
+      log.info("Listeners being notified: %s", listenerCatalog.getListeners().size());
       // The following class notifies all the listeners loaded in a loop. It will stop notifying if one of the loaded
       // listeners throws an Exception. This is expected behaviour. If Drone Fly is deployed in Kubernetes containers
       // with only one listener loaded per instance, it won't be an issue.

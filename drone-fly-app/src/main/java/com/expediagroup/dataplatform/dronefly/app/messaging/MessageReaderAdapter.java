@@ -28,11 +28,11 @@ public class MessageReaderAdapter {
     this.delegate = delegate;
   }
 
-  public synchronized ApiaryListenerEvent read() {
+  public ApiaryListenerEvent read() {
     return delegate.next();
   }
 
-  public synchronized void close() throws IOException {
+  public void close() throws IOException {
     delegate.close();
   }
 }
