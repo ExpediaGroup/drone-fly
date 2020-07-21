@@ -16,7 +16,9 @@
 package com.expediagroup.dataplatform.dronefly.app.service;
 
 import java.io.IOException;
+import java.util.List;
 
+import org.apache.hadoop.hive.metastore.MetaStoreEventListener;
 import org.apache.hadoop.hive.metastore.MetaStoreListenerNotifier;
 import org.apache.hadoop.hive.metastore.api.MetaException;
 import org.apache.hadoop.hive.metastore.api.NoSuchObjectException;
@@ -53,12 +55,13 @@ public class DroneFlyNotificationService {
     try {
       ApiaryListenerEvent event = reader.read();
       ListenerEvent hiveEvent = converterService.toHiveEvent(event);
+      List<MetaStoreEventListener> listeners = listenerCatalog.getListeners();
       log.info("Read event: %s", event.getEventType().toString());
-      log.info("Listeners being notified: %s", listenerCatalog.getListeners().size());
+      log.info("Listeners being notified: %s", listeners.size());
       // The following class notifies all the listeners loaded in a loop. It will stop notifying if one of the loaded
       // listeners throws an Exception. This is expected behaviour. If Drone Fly is deployed in Kubernetes containers
       // with only one listener loaded per instance, it won't be an issue.
-      MetaStoreListenerNotifier.notifyEvent(listenerCatalog.getListeners(), getHiveEventType(event), hiveEvent);
+      MetaStoreListenerNotifier.notifyEvent(listeners, getHiveEventType(event), hiveEvent);
     } catch (MetaStoreEventsException e) {
       throw new DroneFlyException("Cannot unmarshal this event. It will be ignored.", e);
     } catch (MetaException | NoSuchObjectException e) {
