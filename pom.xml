@@ -144,6 +144,7 @@
             </to>
             <container>
               <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
+              <!-- The following port does not matter in K8s-->
               <ports>
                 <port>${docker.container.port}</port>
               </ports>
