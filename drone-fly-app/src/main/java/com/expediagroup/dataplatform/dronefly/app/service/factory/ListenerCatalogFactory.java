@@ -41,7 +41,7 @@ public class ListenerCatalogFactory {
     if (StringUtils.isBlank(listenerImplList)) {
       log
           .warn(
-              "No Hive metastore listeners have been provided in the configuration or hive-site.xml. Going to use: {}",
+              "No Hive metastore listeners have been provided as argument {apiary.listener.list} or hive-site.xml. Going to use: {}",
               LoggingMetastoreListener.class.getName());
       listenerImplList = LoggingMetastoreListener.class.getName();
     }
