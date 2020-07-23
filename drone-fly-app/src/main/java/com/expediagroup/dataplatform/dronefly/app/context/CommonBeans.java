@@ -56,11 +56,7 @@ public class CommonBeans {
     ListenerCatalog listenerCatalog = new ListenerCatalogFactory(conf).newInstance(confListenerList);
     List<MetaStoreEventListener> listenerList = listenerCatalog.getListeners();
     String listeners = listenerList.stream().map(x -> x.getClass().getName()).collect(Collectors.joining(", "));
-
-    for (MetaStoreEventListener listener : listenerList) {
-      log.info(listener.getClass().getName());
-    }
-    log.info("DroneFly is starting with {} listeners: ", listenerList.size(), listeners);
+    log.info("DroneFly is starting with {} listeners: {}", listenerList.size(), listeners);
     return listenerCatalog;
   }
 
