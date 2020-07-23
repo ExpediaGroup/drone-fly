@@ -20,11 +20,10 @@
 
 package com.expediagroup.dataplatform.dronefly.app.service;
 
-import static com.expediagroup.apiary.extensions.events.metastore.common.Preconditions.checkNotEmpty;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hive.common.JavaUtils;
 import org.apache.hadoop.hive.conf.HiveConf;
@@ -36,7 +35,9 @@ public class ListenerCatalog {
   private final List<MetaStoreEventListener> listeners;
 
   public ListenerCatalog(HiveConf conf, String listenerImplList) {
-    checkNotEmpty(listenerImplList, "ListenerImplList cannot be null or empty");
+    if (StringUtils.isBlank(listenerImplList)) {
+      listenerImplList = "com.expediagroup.dataplatform.dronefly.app.service.listener.DefaultDroneFlyListener";
+    }
     listeners = getMetaStoreListeners(MetaStoreEventListener.class, conf, listenerImplList.trim());
   }
 

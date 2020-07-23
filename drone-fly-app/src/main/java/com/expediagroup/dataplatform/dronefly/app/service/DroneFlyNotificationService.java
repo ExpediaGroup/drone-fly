@@ -56,10 +56,10 @@ public class DroneFlyNotificationService {
       ApiaryListenerEvent event = reader.read();
       ListenerEvent hiveEvent = converterService.toHiveEvent(event);
       List<MetaStoreEventListener> listeners = listenerCatalog.getListeners();
-      log.info("Read event: {}", event.getEventType().toString());
-      log.info("DB Name: {}", event.getDatabaseName().toString());
-      log.info("Table Name: {}", event.getTableName().toString());
-      log.info("Listeners being notified: {}", listeners.size());
+      log.info("Notifying event type: {}", event.getEventType().toString());
+      log.debug("DB Name: {}", event.getDatabaseName().toString());
+      log.debug("Table Name: {}", event.getTableName().toString());
+      log.debug("Listeners being notified: {}", listeners.size());
       // The following class notifies all the listeners loaded in a loop. It will stop notifying if one of the loaded
       // listeners throws an Exception. This is expected behaviour. If Drone Fly is deployed in Kubernetes containers
       // with only one listener loaded per instance, it won't be an issue.

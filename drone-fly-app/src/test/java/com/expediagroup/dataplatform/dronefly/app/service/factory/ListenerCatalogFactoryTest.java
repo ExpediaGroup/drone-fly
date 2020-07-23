@@ -16,8 +16,6 @@
 package com.expediagroup.dataplatform.dronefly.app.service.factory;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.junit.jupiter.api.BeforeEach;
@@ -72,11 +70,8 @@ public class ListenerCatalogFactoryTest {
 
   @Test
   public void listenerImplListNotProvidedInConfOrHiveSite() {
-    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-      listenerCatalogFactory.newInstance("");
-    });
-
-    assertTrue(exception.getMessage().contains("ListenerImplList cannot be null or empty"));
+    ListenerCatalog listenerCatalog = listenerCatalogFactory.newInstance("");
+    assertThat(listenerCatalog.getListeners().size()).isEqualTo(1);
   }
 
   @Test
@@ -93,11 +88,9 @@ public class ListenerCatalogFactoryTest {
 
   @Test
   public void nullListenerImplListProvided() {
-    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-      listenerCatalogFactory.newInstance(null);
-    });
+    ListenerCatalog listenerCatalog = listenerCatalogFactory.newInstance(null);
 
-    assertTrue(exception.getMessage().contains("ListenerImplList cannot be null or empty"));
+    assertThat(listenerCatalog.getListeners().size()).isEqualTo(1);
   }
 
 }
