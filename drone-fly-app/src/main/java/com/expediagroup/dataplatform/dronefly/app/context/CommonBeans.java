@@ -37,6 +37,9 @@ import com.expediagroup.dataplatform.dronefly.app.service.factory.ListenerCatalo
 public class CommonBeans {
   private static final Logger log = LoggerFactory.getLogger(CommonBeans.class);
 
+  @Value("${instance.name:drone-fly}")
+  private String instanceName;
+
   @Value("${apiary.bootstrapservers}")
   private String bootstrapServers;
 
@@ -62,8 +65,7 @@ public class CommonBeans {
 
   @Bean
   public MessageReaderAdapter messageReaderAdapter() {
-    KafkaMessageReader delegate = KafkaMessageReaderBuilder.builder(bootstrapServers, topicName, "drone-fly").build();
-
+    KafkaMessageReader delegate = KafkaMessageReaderBuilder.builder(bootstrapServers, topicName, instanceName).build();
     return new MessageReaderAdapter(delegate);
   }
 
