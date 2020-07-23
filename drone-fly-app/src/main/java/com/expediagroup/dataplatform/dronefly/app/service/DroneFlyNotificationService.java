@@ -60,6 +60,7 @@ public class DroneFlyNotificationService {
       log.debug("DB Name: {}", event.getDatabaseName().toString());
       log.debug("Table Name: {}", event.getTableName().toString());
       log.debug("Listeners being notified: {}", listeners.size());
+
       // The following class notifies all the listeners loaded in a loop. It will stop notifying if one of the loaded
       // listeners throws an Exception. This is expected behaviour. If Drone Fly is deployed in Kubernetes containers
       // with only one listener loaded per instance, it won't be an issue.

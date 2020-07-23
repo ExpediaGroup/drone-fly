@@ -15,8 +15,12 @@
  */
 package com.expediagroup.dataplatform.dronefly.app.context;
 
+import java.util.stream.Collectors;
+
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.metastore.api.MetaException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +33,7 @@ import com.expediagroup.dataplatform.dronefly.app.service.factory.ListenerCatalo
 
 @Configuration
 public class CommonBeans {
+  private static final Logger log = LoggerFactory.getLogger(CommonBeans.class);
 
   @Value("${apiary.bootstrapservers}")
   private String bootstrapServers;
@@ -46,7 +51,14 @@ public class CommonBeans {
 
   @Bean
   public ListenerCatalog listenerCatalog(HiveConf conf) throws MetaException {
-    return new ListenerCatalogFactory(conf).newInstance(confListenerList);
+    ListenerCatalog listenerCatalog = new ListenerCatalogFactory(conf).newInstance(confListenerList);
+    String listeners = listenerCatalog
+        .getListeners()
+        .stream()
+        .map(x -> x.getClass().getName())
+        .collect(Collectors.joining(", "));
+    log.info("DroneFly is starting with listeners: ", listeners);
+    return listenerCatalog;
   }
 
   @Bean
