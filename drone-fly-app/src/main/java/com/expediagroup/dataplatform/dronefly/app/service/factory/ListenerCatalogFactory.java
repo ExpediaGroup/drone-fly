@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.expediagroup.dataplatform.dronefly.app.service.ListenerCatalog;
-import com.expediagroup.dataplatform.dronefly.app.service.listener.DefaultDroneFlyListener;
+import com.expediagroup.dataplatform.dronefly.app.service.listener.LoggingMetastoreListener;
 
 public class ListenerCatalogFactory {
   private static final Logger log = LoggerFactory.getLogger(ListenerCatalogFactory.class);
@@ -42,8 +42,8 @@ public class ListenerCatalogFactory {
       log
           .warn(
               "No Hive metastore listeners have been provided in the configuration or hive-site.xml. Going to use: {}",
-              DefaultDroneFlyListener.class.getName());
-      listenerImplList = DefaultDroneFlyListener.class.getName();
+              LoggingMetastoreListener.class.getName());
+      listenerImplList = LoggingMetastoreListener.class.getName();
     }
 
     return new ListenerCatalog(hiveConf, listenerImplList);
