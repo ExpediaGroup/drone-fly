@@ -27,7 +27,6 @@ import org.apache.hadoop.hive.metastore.api.MetaException;
 import org.junit.jupiter.api.Test;
 
 import com.expediagroup.dataplatform.dronefly.app.service.listener.AnotherDummyListener;
-import com.expediagroup.dataplatform.dronefly.app.service.listener.DefaultDroneFlyListener;
 import com.expediagroup.dataplatform.dronefly.app.service.listener.DummyListener;
 import com.expediagroup.dataplatform.dronefly.core.exception.DroneFlyException;
 
@@ -101,19 +100,20 @@ public class ListenerCatalogTest {
   @Test
   public void emptyListenerImplList() throws MetaException {
     String listenerImplList = "   ";
-    listenerCatalog = new ListenerCatalog(new HiveConf(), listenerImplList);
-    List<MetaStoreEventListener> result = listenerCatalog.getListeners();
-    assertThat(result.size()).isEqualTo(1);
-    assertThat(result.get(0)).isInstanceOf(DefaultDroneFlyListener.class);
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+      listenerCatalog = new ListenerCatalog(new HiveConf(), listenerImplList);
+    });
+
+    assertTrue(exception.getMessage().contains("ListenerImplList cannot be null or empty"));
   }
 
   @Test
   public void nullListenerImplList() throws MetaException {
     String listenerImplList = null;
-    listenerCatalog = new ListenerCatalog(new HiveConf(), listenerImplList);
-    List<MetaStoreEventListener> result = listenerCatalog.getListeners();
-    assertThat(result.size()).isEqualTo(1);
-    assertThat(result.get(0)).isInstanceOf(DefaultDroneFlyListener.class);
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+      listenerCatalog = new ListenerCatalog(new HiveConf(), listenerImplList);
+    });
+    assertTrue(exception.getMessage().contains("ListenerImplList cannot be null or empty"));
   }
 
 }

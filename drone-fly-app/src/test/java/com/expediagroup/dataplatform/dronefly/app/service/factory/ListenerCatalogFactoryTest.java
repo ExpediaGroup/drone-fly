@@ -70,7 +70,7 @@ public class ListenerCatalogFactoryTest {
 
   @Test
   public void listenerImplListNotProvidedInConfOrHiveSite() {
-    ListenerCatalog listenerCatalog = listenerCatalogFactory.newInstance("");
+    ListenerCatalog listenerCatalog = listenerCatalogFactory.newInstance(null);
     assertThat(listenerCatalog.getListeners().size()).isEqualTo(1);
   }
 
@@ -89,7 +89,6 @@ public class ListenerCatalogFactoryTest {
   @Test
   public void nullListenerImplListProvided() {
     ListenerCatalog listenerCatalog = listenerCatalogFactory.newInstance(null);
-
     assertThat(listenerCatalog.getListeners().size()).isEqualTo(1);
   }
 

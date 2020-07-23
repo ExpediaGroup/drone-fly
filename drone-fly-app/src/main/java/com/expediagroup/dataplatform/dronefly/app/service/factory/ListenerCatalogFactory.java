@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.expediagroup.dataplatform.dronefly.app.service.ListenerCatalog;
+import com.expediagroup.dataplatform.dronefly.app.service.listener.DefaultDroneFlyListener;
 
 public class ListenerCatalogFactory {
   private static final Logger log = LoggerFactory.getLogger(ListenerCatalogFactory.class);
@@ -36,6 +37,15 @@ public class ListenerCatalogFactory {
       log.info("{apiary.listener.list} is empty. Going to look in hive-site.xml if it is provided on the classpath.");
       listenerImplList = hiveConf.getVar(HiveConf.ConfVars.METASTORE_EVENT_LISTENERS);
     }
+
+    if (StringUtils.isBlank(listenerImplList)) {
+      log
+          .warn(
+              "No Hive metastore listeners have been provided in the configuration or hive-site.xml. Going to use: {}",
+              DefaultDroneFlyListener.class.getName());
+      listenerImplList = DefaultDroneFlyListener.class.getName();
+    }
+
     return new ListenerCatalog(hiveConf, listenerImplList);
   }
 
