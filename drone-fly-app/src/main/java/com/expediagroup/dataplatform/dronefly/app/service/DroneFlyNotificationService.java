@@ -57,8 +57,7 @@ public class DroneFlyNotificationService {
       ListenerEvent hiveEvent = converterService.toHiveEvent(event);
       List<MetaStoreEventListener> listeners = listenerCatalog.getListeners();
       log.info("Notifying event type: {}", event.getEventType().toString());
-      log.debug("DB Name: {}", event.getDatabaseName().toString());
-      log.debug("Table Name: {}", event.getTableName().toString());
+      log.debug("Qualified Table Name: {}.{}", event.getDatabaseName().toString(), event.getTableName().toString());
       log.debug("Listeners being notified: {}", listeners.size());
 
       // The following class notifies all the listeners loaded in a loop. It will stop notifying if one of the loaded
