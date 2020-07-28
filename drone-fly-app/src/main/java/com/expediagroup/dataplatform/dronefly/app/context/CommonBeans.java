@@ -40,10 +40,10 @@ public class CommonBeans {
   @Value("${instance.name:drone-fly}")
   private String instanceName;
 
-  @Value("${apiary.bootstrapservers}")
+  @Value("${apiary.bootstrap.servers}")
   private String bootstrapServers;
 
-  @Value("${apiary.kafka.topicname}")
+  @Value("${apiary.kafka.topic.name}")
   private String topicName;
 
   @Value("${apiary.listener.list:}")
