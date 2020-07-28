@@ -31,18 +31,18 @@ Drone Fly uses the Jib plugin which will build a docker image during the `packag
 # Running DroneFly
 
 	java -Dloader.path=lib/ -jar drone-fly-app-<version>-exec.jar \
-		--apiary.bootstrapservers=localhost:9092 \
-		--apiary.kafka.topicname=apiary \
+		--apiary.bootstrap.servers=localhost:9092 \
+		--apiary.kafka.topic.name=apiary \
 		--apiary.listener.list="com.expediagroup.sampleListener1,com.expediagroup.sampleListener2"
 	
 # Running DroneFly Docker image
 
-	docker run --env APIARY_BOOTSTRAPSERVERS="localhost:9092" \
+	docker run --env APIARY_BOOTSTRAP_SERVERS="localhost:9092" \
 			   --env APIARY_LISTENER_LIST="com.expediagroup.sampleListener1,com.expediagroup.sampleListener2" \
-			   --env APIARY_KAFKA_TOPICNAME="dronefly" \
+			   --env APIARY_KAFKA_TOPIC_NAME="dronefly" \
 			   expediagroup/drone-fly-app:<image-version>
 	
-The properties `apiary.bootstrapservers`, `apiary.kafka.topicname` and `apiary.listener.list` can also be provided in the spring properties file.
+The properties `instance.name`, `apiary.bootstrap.servers`, `apiary.kafka.topic.name` and `apiary.listener.list` can also be provided in the spring properties file.
 	
 	java -Dloader.path=lib/ -jar drone-fly-app-<version>-exec.jar --spring.config.location=file:///dronefly.properties
 
