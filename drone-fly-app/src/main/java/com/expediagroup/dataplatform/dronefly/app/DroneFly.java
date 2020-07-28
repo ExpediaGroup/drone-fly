@@ -36,7 +36,7 @@ public class DroneFly implements ApplicationContextAware {
   public static void main(String[] args) {
     TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
     new SpringApplicationBuilder(DroneFly.class)
-        .properties("spring.config.location:${config:null}")
+        .properties("spring.config.additional-location:classpath:/drone-fly-app.yml,${config:null}")
         .properties("server.port:${endpoint.port:8008}")
         .build()
         .run(args);
