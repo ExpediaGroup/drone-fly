@@ -38,6 +38,13 @@
     <dockerhub.url>docker.io</dockerhub.url>
   </properties>
 
+  <scm>
+    <connection>scm:git:https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/ExpediaGroup/drone-fly.git</connection>
+    <developerConnection>scm:git:https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/ExpediaGroup/drone-fly.git</developerConnection>
+    <url>https://github.com/ExpediaGroup/drone-fly</url>
+    <tag>HEAD</tag>
+  </scm>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -144,7 +151,7 @@
             </to>
             <container>
               <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
-              <!-- The following port does not matter in K8s-->
+              <!-- The following port does not matter in K8s -->
               <ports>
                 <port>${docker.container.port}</port>
               </ports>
