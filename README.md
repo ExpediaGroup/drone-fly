@@ -45,6 +45,10 @@ Drone Fly uses the Jib plugin which will build a docker image during the `packag
 The properties `instance.name`, `apiary.bootstrap.servers`, `apiary.kafka.topic.name` and `apiary.listener.list` can also be provided in the spring properties file.
 	
 	java -Dloader.path=lib/ -jar drone-fly-app-<version>-exec.jar --spring.config.location=file:///dronefly.properties
+	
+# Terraform
+
+A Terraform module for kubernetes deployment is available [here](https://github.com/ExpediaGroup/apiary-drone-fly).
 
 # Legal
 This project is available under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
