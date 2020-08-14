@@ -68,7 +68,7 @@ The properties `instance.name`, `apiary.bootstrap.servers`, `apiary.kafka.topic.
 	
 	java -Dloader.path=lib/ -jar drone-fly-app-<version>-exec.jar --spring.config.location=file:///dronefly.properties
 	
-The parameter `-Dloader-path` is the path where Drone Fly will search for configured HMS listeners. By default, Drone Fly starts up on port `8008` but it can be configured using standar
+The parameter `-Dloader-path` is the path where Drone Fly will search for configured HMS listeners.
 
 ## Configuring Drone Fly
 
@@ -87,6 +87,15 @@ The table below describes all the available configuration values for Drone Fly.
 ## Metrics
 
 Drone Fly exposes standard [JVM and Kafka metrics](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready-metrics-meter) using [Prometheus on Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-features.html#production-ready-metrics-export-prometheus) endpoint `/actuator/prometheus`.
+
+### Some of the useful metrics to track are:
+
+```
+system_cpu_usage
+kafka_consumer_records_consumed_total_records_total
+jvm_memory_committed_bytes
+```
+
 
 ## Legal
 This project is available under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
