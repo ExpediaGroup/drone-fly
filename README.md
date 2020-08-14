@@ -68,11 +68,9 @@ The properties `instance.name`, `apiary.bootstrap.servers`, `apiary.kafka.topic.
 	
 	java -Dloader.path=lib/ -jar drone-fly-app-<version>-exec.jar --spring.config.location=file:///dronefly.properties
 	
-The parameter `-Dloader-path` is the path where Drone Fly will search for configured HMS listeners.
+The parameter `-Dloader-path` is the path where Drone Fly will search for configured HMS listeners. By default, Drone Fly starts up on port `8008` but it can be configured using standar
 
 ## Configuring Drone Fly
-
-
 
 ### Drone Fly configuration reference
 The table below describes all the available configuration values for Drone Fly.
@@ -81,8 +79,14 @@ The table below describes all the available configuration values for Drone Fly.
 |------|-------------|------|---------|:--------:|
 | apiary.bootstrap.servers | Kafka bootstrap servers that receive Hive metastore events. | `string` | n/a | yes |
 | apiary.kafka.topic.name | Kafka topic name that receive Hive metastore events. | `string` | n/a | yes |
-| apiary.listener.list | Comma separated list of Hive metastore listeners to load from classpath. eg. com.expedia.HMSListener1,com.expedia.HMSListener2. | `string` | `"com.expediagroup.dataplatform.dronefly.app.service.listener.LoggingMetastoreListener"` | no |
+| apiary.listener.list | Comma separated list of Hive metastore listeners to load from classpath. eg. `com.expedia.HMSListener1,com.expedia.HMSListener2` | `string` | `"com.expediagroup.dataplatform.dronefly.app.service.listener.LoggingMetastoreListener"` | no |
 | instance.name | Instance name for a Drone Fly instance. `instance.name` is also used to derive Kafka consumer group. Therefore, in a multi-instance deployment, unique `instance.name` for each Drone Fly instance needs to be provided to avoid all instances ending up in same Kafka consumer group. | `string` | `drone-fly` | no |
+| endpoint.port | Port on which Drone Fly Spring Boot app will start. | `string` | `8008` | no |
+
+
+## Metrics
+
+Drone Fly exposes standard [JVM and Kafka metrics](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready-metrics-meter) using [Prometheus on Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-features.html#production-ready-metrics-export-prometheus) endpoint `/actuator/prometheus`.
 
 ## Legal
 This project is available under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
