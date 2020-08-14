@@ -53,7 +53,7 @@ wget -q https://search.maven.org/remotecontent?filepath=com/expediagroup/apiary/
 Then [Drone Fly Terraform](https://github.com/ExpediaGroup/apiary-drone-fly) module can be used to install your Docker image in a Kubernetes container.
 
 
-### Using without Docker
+### Using Uber Jar
 
 Drone Fly build also produces an [uber jar](https://mvnrepository.com/artifact/com.expediagroup/drone-fly-app) so it can be started as a stand-alone Java service.
 
