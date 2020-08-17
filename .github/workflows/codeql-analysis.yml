@@ -1,7 +1,6 @@
 name: "Code scanning - action"
 
 on:
-  push:
   pull_request:
   schedule:
     - cron: '0 0 * * 4'
@@ -48,4 +47,3 @@ jobs:
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
-
