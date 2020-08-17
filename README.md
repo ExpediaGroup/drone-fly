@@ -35,7 +35,7 @@ Drone Fly can be set up to run in dockerized containers where each instance is i
 ## Usage
 ### Using with Docker
 
-To install a new HMS listener within the Drone Fly context, it is recommended that you build your docker image using Drone Fly base [Docker image](https://hub.docker.com/r/expediagroup/drone-fly-app).
+To install a new HMS listener within the Drone Fly context, it is recommended that you build your Docker image using the Drone Fly base [Docker image](https://hub.docker.com/r/expediagroup/drone-fly-app).
 
 A sample image to install [Apiary-SNS-Listener](https://github.com/ExpediaGroup/apiary-extensions/tree/master/apiary-metastore-events/sns-metastore-events/apiary-metastore-listener) would look like as follows:
 
