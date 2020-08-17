@@ -63,7 +63,7 @@ Then [Drone Fly Terraform](https://github.com/ExpediaGroup/apiary-drone-fly) mod
 
 Drone Fly build also produces an [uber jar](https://mvnrepository.com/artifact/com.expediagroup/drone-fly-app) so it can be started as a stand-alone Java service.
 
-#### Running DroneFly Jar
+#### Running Drone Fly Jar
 
 	java -Dloader.path=lib/ -jar drone-fly-app-<version>-exec.jar \
 		--apiary.bootstrap.servers=localhost:9092 \
