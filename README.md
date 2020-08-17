@@ -85,7 +85,7 @@ The table below describes all the available configuration values for Drone Fly.
 |------|-------------|------|---------|:--------:|
 | apiary.bootstrap.servers | Kafka bootstrap servers that receive Hive metastore events. | `string` | n/a | yes |
 | apiary.kafka.topic.name | Kafka topic name that receives Hive metastore events. | `string` | n/a | yes |
-| apiary.listener.list | Comma separated list of Hive metastore listeners to load from the classpath. eg. `com.expedia.HMSListener1,com.expedia.HMSListener2` | `string` | `"com.expediagroup.dataplatform.dronefly.app.service.listener.LoggingMetastoreListener"` | no |
+| apiary.listener.list | Comma separated list of Hive metastore listeners to load from the classpath, e.g. `com.expedia.HMSListener1,com.expedia.HMSListener2` | `string` | `"com.expediagroup.dataplatform.dronefly.app.service.listener.LoggingMetastoreListener"` | no |
 | instance.name | Instance name for a Drone Fly instance. `instance.name` is also used to derive Kafka consumer group. Therefore, in a multi-instance deployment, unique `instance.name` for each Drone Fly instance needs to be provided to avoid all instances ending up in the same Kafka consumer group. | `string` | `drone-fly` | no |
 | endpoint.port | Port on which Drone Fly Spring Boot app will start. | `string` | `8008` | no |
 
