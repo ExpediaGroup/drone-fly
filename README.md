@@ -10,19 +10,19 @@ A service which allows Hive metastore (HMS) `MetaStoreEventListener` implementat
 
 Drone Fly is a distributed Hive metastore events forwarder service that allows users to deploy metastore listeners outside the Hive metastore service.
 
-With the advent of event driven systems, the number of listeners that a user needs to install in the metastore is ever increasing. These listeners can be both internal or can be provided by third party tools for integration purposes. More and more processing is being added to these listeners to address various business use cases.
+With the advent of event-driven systems, the number of listeners that a user needs to install in the metastore is ever increasing. These listeners can be both internal or can be provided by third party tools for integration purposes. More and more processing is being added to these listeners to address various business use cases.
 
 Adding these listeners directly on the classpath of your Hive metastore couples them with it and can lead to performance degradation or in the worst case, it could take down the entire metastore (e.g. by running out memory, thread starvation etc.) Drone Fly decouples your HMS from the event listeners by providing a virtual Hive context. The event listeners can be provided on the Drone Fly's classpath and it then forwards the events received from [Kafka metastore Listener](https://github.com/ExpediaGroup/apiary-extensions/tree/master/apiary-metastore-events/kafka-metastore-events/kafka-metastore-listener) on to the respective listeners.
 
 ## Start using
 
-A Terraform module for kubernetes deployment is available [here](https://github.com/ExpediaGroup/apiary-drone-fly).
+A Terraform module for Kubernetes deployment is available [here](https://github.com/ExpediaGroup/apiary-drone-fly).
 
 Docker images can be found in Expedia Group's [dockerhub](https://hub.docker.com/search/?q=expediagroup%2Fdrone-fly&type=image).
 
 ## System architecture
 
-The diagram below shows a typical Hive metastore setup without using Drone Fly. In this example there are a number of HiveMetastoreListeners installed which send Hive events to other systems like Apache Atlas, AWS SNS, Apache Kafka and other custom implementations.
+The diagram below shows a typical Hive metastore setup without using Drone Fly. In this example, there are a number of HiveMetastoreListeners installed which send Hive events to other systems like Apache Atlas, AWS SNS, Apache Kafka and other custom implementations.
 
 ![Hive Metastore setup without Drone Fly.](drone-fly-before.png "Multiple Hive metastore listeners are deployed in HMS context.")
 
@@ -35,7 +35,7 @@ Drone Fly can be set up to run in dockerized containers where each instance is i
 ## Usage
 ### Using with Docker
 
-To install a new HMS listener within Drone Fly context, it is recommended that you build your docker image using Drone Fly base [Docker image](https://hub.docker.com/r/expediagroup/drone-fly-app).
+To install a new HMS listener within the Drone Fly context, it is recommended that you build your docker image using Drone Fly base [Docker image](https://hub.docker.com/r/expediagroup/drone-fly-app).
 
 A sample image to install [Apiary-SNS-Listener](https://github.com/ExpediaGroup/apiary-extensions/tree/master/apiary-metastore-events/sns-metastore-events/apiary-metastore-listener) would look like as follows:
 
@@ -84,9 +84,9 @@ The table below describes all the available configuration values for Drone Fly.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | apiary.bootstrap.servers | Kafka bootstrap servers that receive Hive metastore events. | `string` | n/a | yes |
-| apiary.kafka.topic.name | Kafka topic name that receive Hive metastore events. | `string` | n/a | yes |
-| apiary.listener.list | Comma separated list of Hive metastore listeners to load from classpath. eg. `com.expedia.HMSListener1,com.expedia.HMSListener2` | `string` | `"com.expediagroup.dataplatform.dronefly.app.service.listener.LoggingMetastoreListener"` | no |
-| instance.name | Instance name for a Drone Fly instance. `instance.name` is also used to derive Kafka consumer group. Therefore, in a multi-instance deployment, unique `instance.name` for each Drone Fly instance needs to be provided to avoid all instances ending up in same Kafka consumer group. | `string` | `drone-fly` | no |
+| apiary.kafka.topic.name | Kafka topic name that receives Hive metastore events. | `string` | n/a | yes |
+| apiary.listener.list | Comma separated list of Hive metastore listeners to load from the classpath. eg. `com.expedia.HMSListener1,com.expedia.HMSListener2` | `string` | `"com.expediagroup.dataplatform.dronefly.app.service.listener.LoggingMetastoreListener"` | no |
+| instance.name | Instance name for a Drone Fly instance. `instance.name` is also used to derive Kafka consumer group. Therefore, in a multi-instance deployment, unique `instance.name` for each Drone Fly instance needs to be provided to avoid all instances ending up in the same Kafka consumer group. | `string` | `drone-fly` | no |
 | endpoint.port | Port on which Drone Fly Spring Boot app will start. | `string` | `8008` | no |
 
 
@@ -107,5 +107,4 @@ jvm_memory_committed_bytes
 This project is available under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 Copyright 2020 Expedia, Inc.
-
 
