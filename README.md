@@ -49,7 +49,7 @@ RUN cd /app/libs && \
 wget -q https://search.maven.org/remotecontent?filepath=com/expediagroup/apiary/apiary-metastore-listener/${APIARY_EXTENSIONS_VERSION}/apiary-metastore-listener-${APIARY_EXTENSIONS_VERSION}-all.jar -O apiary-metastore-listener-${APIARY_EXTENSIONS_VERSION}-all.jar
 ```
 
-#### Running DroneFly Docker image
+#### Running Drone Fly Docker image
 
 	docker run --env APIARY_BOOTSTRAP_SERVERS="localhost:9092" \
 		   --env APIARY_LISTENER_LIST="com.expediagroup.sampleListener1,com.expediagroup.sampleListener2" \
