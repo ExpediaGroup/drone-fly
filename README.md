@@ -2,6 +2,10 @@
 A service which allows Hive metastore (HMS) `MetaStoreEventListener` implementations to be deployed in a separate context to the metastore's own.
 
 ## Overview
+[![Build Status](https://github.com/ExpediaGroup/drone-fly/workflows/Build/badge.svg)](https://github.com/ExpediaGroup/drone-fly/actions?query=workflow:"Java CI")
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Docker](https://img.shields.io/badge/docker-drone--fly-blue)](https://hub.docker.com/r/expediagroup/drone-fly-app)
+
 Drone Fly is a distributed Hive metastore events forwarder service that allows users to deploy metastore listeners outside the Hive metastore service.
 
 With the advent of event driven systems, the number of listeners that a user needs to install in the metastore is ever increasing. These listeners can be both internal or can be provided by third party tools for integration purposes. More and more processing is being added to these listeners to address various business use cases.
