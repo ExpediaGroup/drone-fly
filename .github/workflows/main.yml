@@ -5,7 +5,7 @@ on: [pull_request]
 jobs:
   test:
     name: Package and run all tests
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
       with:
