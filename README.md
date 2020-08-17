@@ -2,7 +2,7 @@
 A service which allows Hive metastore (HMS) `MetaStoreEventListener` implementations to be deployed in a separate context to the metastore's own.
 
 ## Overview
-[![Build Status](https://github.com/ExpediaGroup/drone-fly/workflows/Build/badge.svg)](https://github.com/ExpediaGroup/drone-fly/actions?query=workflow:"Java +CI")
+[![Build Status](https://github.com/ExpediaGroup/drone-fly/workflows/Build/badge.svg)](https://github.com/ExpediaGroup/drone-fly/actions?query=workflow:"Java+CI")
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Docker](https://img.shields.io/badge/docker-drone--fly-blue)](https://hub.docker.com/r/expediagroup/drone-fly-app)
 
