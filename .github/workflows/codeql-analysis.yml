@@ -4,7 +4,7 @@ on:
   push:
   pull_request:
   schedule:
-    - cron: '0 0 * * 6'
+    - cron: '0 0 * * 4'
 
 jobs:
   CodeQL-Build:
@@ -27,9 +27,8 @@ jobs:
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1
-      # Override language selection by uncommenting this and choosing your languages
       with:
-        languages: go
+        languages: java
 
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
