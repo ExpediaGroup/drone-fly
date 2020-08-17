@@ -22,7 +22,7 @@ Docker images can be found in Expedia Group's [dockerhub](https://hub.docker.com
 
 ## System architecture
 
-The diagram below shows a typical Hive metastore setup without using Drone Fly. In this example, there are a number of HiveMetastoreListeners installed which send Hive events to other systems like Apache Atlas, AWS SNS, Apache Kafka and other custom implementations.
+The diagram below shows a typical Hive metastore setup without using Drone Fly. In this example, there are several HiveMetastoreListeners installed which send Hive events to other systems like Apache Atlas, AWS SNS, Apache Kafka and other custom implementations.
 
 ![Hive Metastore setup without Drone Fly.](drone-fly-before.png "Multiple Hive metastore listeners are deployed in HMS context.")
 
@@ -107,4 +107,3 @@ jvm_memory_committed_bytes
 This project is available under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 Copyright 2020 Expedia, Inc.
-
