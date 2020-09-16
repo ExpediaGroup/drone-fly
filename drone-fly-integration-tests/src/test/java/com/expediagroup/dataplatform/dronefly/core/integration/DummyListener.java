@@ -51,7 +51,7 @@ public class DummyListener extends MetaStoreEventListener {
   }
 
   /**
-   * @return event at index i.
+   * @return event at index i, or null if no event was received.
    */
   public static ListenerEvent get(int index) {
     if (notifyList.isEmpty()) {
