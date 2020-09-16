@@ -128,7 +128,6 @@ public class DroneFlyIntegrationTest {
     CONF.set(TOPIC_NAME.key(), TOPIC);
 
     kafkaMetaStoreEventListener = new KafkaMetaStoreEventListener(CONF);
-
   }
 
   @BeforeEach
