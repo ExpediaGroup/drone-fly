@@ -28,8 +28,9 @@ import com.google.common.collect.Lists;
 
 public class DroneFlyIntegrationTestUtils {
 
-  private static final String DATABASE = "database";
-  private static final String TABLE = "table";
+  static final String TOPIC = "apiary-events";
+  static final String DATABASE = "database";
+  static final String TABLE = "table";
 
   public static Table buildTable() {
     return buildTable(null);
