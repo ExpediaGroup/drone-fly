@@ -148,9 +148,6 @@ public class DroneFlyIntegrationTest {
 
   @Test
   public void typical() {
-
-    // Thread.sleep(1000);
-
     AddPartitionEvent addPartitionEvent = new AddPartitionEvent(buildTable(), buildPartition(), true, hmsHandler);
     kafkaMetaStoreEventListener.onAddPartition(addPartitionEvent);
 
