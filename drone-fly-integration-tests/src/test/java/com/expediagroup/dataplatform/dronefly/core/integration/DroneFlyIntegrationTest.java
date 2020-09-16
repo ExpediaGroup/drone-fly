@@ -190,6 +190,7 @@ public class DroneFlyIntegrationTest {
       CreateTableEvent createTableEvent = (CreateTableEvent) event;
       assertThat(createTableEvent.getTable().getDbName()).isEqualTo(DATABASE);
       assertThat(createTableEvent.getTable().getTableName()).isEqualTo(TABLE);
+      break;
     default:
       fail("Received an event type other than ADD_PARTITION or CREATE_TABLE.");
       break;
