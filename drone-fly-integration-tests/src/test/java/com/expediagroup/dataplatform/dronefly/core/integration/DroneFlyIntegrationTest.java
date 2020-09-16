@@ -55,7 +55,6 @@ import org.awaitility.Duration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -98,20 +97,11 @@ public class DroneFlyIntegrationTest {
   @BeforeAll
   void setUp() throws InterruptedException {
     /**
-     * The code upto line 110 is required so that EmbeddedKafka waits for the consumer group assignment to complete.
+     * The function initEmbeddedKafa() is required so that EmbeddedKafka waits for the consumer group assignment to
+     * complete.
      * https://stackoverflow.com/questions/47312373/embeddedkafka-sending-messages-to-consumer-after-delay-in-subsequent-test
      */
-
-    Map<String, Object> configs = new HashMap<>(KafkaTestUtils.consumerProps("consumer", "false", embeddedKafkaBroker));
-    DefaultKafkaConsumerFactory<String, String> consumerFactory = new DefaultKafkaConsumerFactory<>(configs,
-        new StringDeserializer(), new StringDeserializer());
-    ContainerProperties containerProperties = new ContainerProperties(TOPIC);
-    container = new KafkaMessageListenerContainer<>(consumerFactory, containerProperties);
-    records = new LinkedBlockingQueue<>();
-    container.setupMessageListener((MessageListener<String, String>) records::add);
-    container.start();
-    ContainerTestUtils.waitForAssignment(container, embeddedKafkaBroker.getPartitionsPerTopic());
-
+    initEmbeddedKafa();
     System.setProperty("instance.name", "test");
     System.setProperty("apiary.bootstrap.servers", embeddedKafkaBroker.getBrokersAsString());
     System.setProperty("apiary.kafka.topic.name", TOPIC);
@@ -120,19 +110,6 @@ public class DroneFlyIntegrationTest {
 
     executorService.execute(() -> DroneFly.main(new String[] {}));
     await().atMost(Duration.TEN_MINUTES).until(DroneFly::isRunning);
-  }
-
-  private void initKafkaListener() {
-    CONF.set(BOOTSTRAP_SERVERS.key(), embeddedKafkaBroker.getBrokersAsString());
-    CONF.set(CLIENT_ID.key(), "apiary-kafka-listener");
-    CONF.set(TOPIC_NAME.key(), TOPIC);
-
-    kafkaMetaStoreEventListener = new KafkaMetaStoreEventListener(CONF);
-  }
-
-  @BeforeEach
-  public void setup() {
-
   }
 
   @AfterEach
@@ -192,6 +169,26 @@ public class DroneFlyIntegrationTest {
       fail("Received an event type other than ADD_PARTITION or CREATE_TABLE.");
       break;
     }
+  }
+
+  private void initEmbeddedKafa() {
+    Map<String, Object> configs = new HashMap<>(KafkaTestUtils.consumerProps("consumer", "false", embeddedKafkaBroker));
+    DefaultKafkaConsumerFactory<String, String> consumerFactory = new DefaultKafkaConsumerFactory<>(configs,
+        new StringDeserializer(), new StringDeserializer());
+    ContainerProperties containerProperties = new ContainerProperties(TOPIC);
+    container = new KafkaMessageListenerContainer<>(consumerFactory, containerProperties);
+    records = new LinkedBlockingQueue<>();
+    container.setupMessageListener((MessageListener<String, String>) records::add);
+    container.start();
+    ContainerTestUtils.waitForAssignment(container, embeddedKafkaBroker.getPartitionsPerTopic());
+  }
+
+  private void initKafkaListener() {
+    CONF.set(BOOTSTRAP_SERVERS.key(), embeddedKafkaBroker.getBrokersAsString());
+    CONF.set(CLIENT_ID.key(), "apiary-kafka-listener");
+    CONF.set(TOPIC_NAME.key(), TOPIC);
+
+    kafkaMetaStoreEventListener = new KafkaMetaStoreEventListener(CONF);
   }
 
 }
