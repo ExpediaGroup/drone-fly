@@ -82,7 +82,7 @@ public class DroneFlyIntegrationTest {
 
   private @Mock HMSHandler hmsHandler;
 
-  protected final ExecutorService executorService = Executors.newFixedThreadPool(1);
+  private final ExecutorService executorService = Executors.newFixedThreadPool(1);
   private static Configuration CONF = new Configuration();
 
   private KafkaMetaStoreEventListener kafkaMetaStoreEventListener;
@@ -109,7 +109,7 @@ public class DroneFlyIntegrationTest {
     initKafkaListener();
 
     executorService.execute(() -> DroneFly.main(new String[] {}));
-    await().atMost(Duration.TEN_MINUTES).until(DroneFly::isRunning);
+    await().atMost(Duration.FIVE_MINUTES).until(DroneFly::isRunning);
   }
 
   @AfterEach

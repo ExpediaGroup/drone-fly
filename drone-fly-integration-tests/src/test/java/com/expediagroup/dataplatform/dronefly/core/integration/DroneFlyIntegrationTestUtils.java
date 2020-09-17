@@ -33,7 +33,7 @@ public class DroneFlyIntegrationTestUtils {
   static final String TABLE = "table";
 
   public static Table buildTable() {
-    return buildTable(null);
+    return buildTable(TABLE);
   }
 
   public static Table buildTable(String tableName) {
@@ -41,8 +41,8 @@ public class DroneFlyIntegrationTestUtils {
     partitions.add(new FieldSchema("a", "string", "comment"));
     partitions.add(new FieldSchema("b", "string", "comment"));
     partitions.add(new FieldSchema("c", "string", "comment"));
-    return new Table(tableName == null ? TABLE : tableName, DATABASE, "me", 1, 1, 1, new StorageDescriptor(),
-        partitions, buildTableParameters(), "originalText", "expandedText", "tableType");
+    return new Table(tableName, DATABASE, "me", 1, 1, 1, new StorageDescriptor(), partitions, buildTableParameters(),
+        "originalText", "expandedText", "tableType");
   }
 
   public static Partition buildPartition() {
