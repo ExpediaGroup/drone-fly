@@ -97,7 +97,7 @@ public class DroneFlyIntegrationTest {
   @BeforeAll
   void setUp() throws InterruptedException {
     /**
-     * The function initEmbeddedKafa() is required so that EmbeddedKafka waits for the consumer group assignment to
+     * The function initEmbeddedKafka() is required so that EmbeddedKafka waits for the consumer group assignment to
      * complete.
      * https://stackoverflow.com/questions/47312373/embeddedkafka-sending-messages-to-consumer-after-delay-in-subsequent-test
      */
