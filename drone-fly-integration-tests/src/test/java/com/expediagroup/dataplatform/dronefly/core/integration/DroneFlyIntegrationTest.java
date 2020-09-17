@@ -101,7 +101,7 @@ public class DroneFlyIntegrationTest {
      * complete.
      * https://stackoverflow.com/questions/47312373/embeddedkafka-sending-messages-to-consumer-after-delay-in-subsequent-test
      */
-    initEmbeddedKafa();
+    initEmbeddedKafka();
     System.setProperty("instance.name", "test");
     System.setProperty("apiary.bootstrap.servers", embeddedKafkaBroker.getBrokersAsString());
     System.setProperty("apiary.kafka.topic.name", TOPIC);
@@ -171,7 +171,7 @@ public class DroneFlyIntegrationTest {
     }
   }
 
-  private void initEmbeddedKafa() {
+  private void initEmbeddedKafka() {
     Map<String, Object> configs = new HashMap<>(KafkaTestUtils.consumerProps("consumer", "false", embeddedKafkaBroker));
     DefaultKafkaConsumerFactory<String, String> consumerFactory = new DefaultKafkaConsumerFactory<>(configs,
         new StringDeserializer(), new StringDeserializer());

@@ -46,7 +46,7 @@ public class DroneFlyIntegrationTestUtils {
   }
 
   public static Partition buildPartition() {
-    return buildPartition(null);
+    return buildPartition("partition");
   }
 
   public static Partition buildPartition(String partitionName) {
