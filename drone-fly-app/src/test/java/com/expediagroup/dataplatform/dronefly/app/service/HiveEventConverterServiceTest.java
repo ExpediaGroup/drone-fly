@@ -84,6 +84,7 @@ public class HiveEventConverterServiceTest {
     assertThat(result.getTable().getDbName()).isEqualTo(DB_NAME);
     assertThat(result.getTable().getTableName()).isEqualTo(TABLE_NAME);
     assertThat(result.getTable().getSd().getLocation()).isEqualTo(TABLE_LOCATION);
+    assertThat(result.getTable().getParameters().get("EXTERNAL")).isEqualTo("TRUE");
   }
 
   @Test
