@@ -1,4 +1,5 @@
-# Drone Fly
+![Logo](.README_images/DroneFly_logo.png)
+
 A service which allows Hive metastore (HMS) `MetaStoreEventListener` implementations to be deployed in a separate context to the metastore's own.
 
 ## Overview
@@ -24,11 +25,11 @@ Docker images can be found in Expedia Group's [dockerhub](https://hub.docker.com
 
 The diagram below shows a typical Hive metastore setup without using Drone Fly. In this example, there are several HiveMetastoreListeners installed which send Hive events to other systems like Apache Atlas, AWS SNS, Apache Kafka and other custom implementations.
 
-![Hive Metastore setup without Drone Fly.](drone-fly-before.png "Multiple Hive metastore listeners are deployed in HMS context.")
+![Hive Metastore setup without Drone Fly.](.README_images/drone-fly-before.png "Multiple Hive metastore listeners are deployed in HMS context.")
 
 With Drone Fly, the setup gets modified as shown in the diagram below. The only listener installed in the Hive metastore context is the [Apiary Kafka Listener](https://github.com/ExpediaGroup/apiary-extensions/tree/master/apiary-metastore-events/kafka-metastore-events/kafka-metastore-listener). This forwards the Hive events on to Kafka from which Drone Fly can retrieve them. The other listeners are moved out into separate contexts and receive the messages from Drone Fly which forwards them on as if they were Hive events so the listener code doesn't need to change at all.
 
-![Hive Metastore setup with Drone Fly.](drone-fly-after.png "Only one Hive metastore listener is deployed in HMS context and others are deployed in Drone Fly context")
+![Hive Metastore setup with Drone Fly.](.README_images/drone-fly-after.png "Only one Hive metastore listener is deployed in HMS context and others are deployed in Drone Fly context")
 
 Drone Fly can be set up to run in dockerized containers where each instance is initiated with one listener to get even further decoupling.
 
