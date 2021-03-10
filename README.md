@@ -5,7 +5,7 @@ A service which allows Hive metastore (HMS) `MetaStoreEventListener` implementat
 ## Overview
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.expediagroup/drone-fly-app/badge.svg?subject=com.expediagroup:drone-fly-app)](https://maven-badges.herokuapp.com/maven-central/com.expediagroup/drone-fly-app)
 [![Build Status](https://github.com/ExpediaGroup/drone-fly/workflows/Build/badge.svg)](https://github.com/ExpediaGroup/drone-fly/actions?query=workflow:"Build")
-[![Coverage Status](https://coveralls.io/repos/github/ExpediaGroup/drone-fly/badge.svg?branch=master)](https://coveralls.io/github/ExpediaGroup/drone-fly?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/ExpediaGroup/drone-fly/badge.svg?branch=main)](https://coveralls.io/github/ExpediaGroup/drone-fly?branch=main)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Docker](https://img.shields.io/badge/docker-drone--fly-blue)](https://hub.docker.com/r/expediagroup/drone-fly-app)
 
@@ -13,7 +13,7 @@ Drone Fly is a distributed Hive metastore events forwarder service that allows u
 
 With the advent of event-driven systems, the number of listeners that a user needs to install in the metastore is ever increasing. These listeners can be both internal or can be provided by third party tools for integration purposes. More and more processing is being added to these listeners to address various business use cases.
 
-Adding these listeners directly on the classpath of your Hive metastore couples them with it and can lead to performance degradation or in the worst case, it could take down the entire metastore (e.g. by running out memory, thread starvation etc.) Drone Fly decouples your HMS from the event listeners by providing a virtual Hive context. The event listeners can be provided on the Drone Fly's classpath and it then forwards the events received from [Kafka metastore Listener](https://github.com/ExpediaGroup/apiary-extensions/tree/master/apiary-metastore-events/kafka-metastore-events/kafka-metastore-listener) on to the respective listeners.
+Adding these listeners directly on the classpath of your Hive metastore couples them with it and can lead to performance degradation or in the worst case, it could take down the entire metastore (e.g. by running out memory, thread starvation etc.) Drone Fly decouples your HMS from the event listeners by providing a virtual Hive context. The event listeners can be provided on the Drone Fly's classpath and it then forwards the events received from [Kafka metastore Listener](https://github.com/ExpediaGroup/apiary-extensions/tree/main/apiary-metastore-events/kafka-metastore-events/kafka-metastore-listener) on to the respective listeners.
 
 ## Start using
 
@@ -27,7 +27,7 @@ The diagram below shows a typical Hive metastore setup without using Drone Fly. 
 
 ![Hive Metastore setup without Drone Fly.](.README_images/drone-fly-before.png "Multiple Hive metastore listeners are deployed in HMS context.")
 
-With Drone Fly, the setup gets modified as shown in the diagram below. The only listener installed in the Hive metastore context is the [Apiary Kafka Listener](https://github.com/ExpediaGroup/apiary-extensions/tree/master/apiary-metastore-events/kafka-metastore-events/kafka-metastore-listener). This forwards the Hive events on to Kafka from which Drone Fly can retrieve them. The other listeners are moved out into separate contexts and receive the messages from Drone Fly which forwards them on as if they were Hive events so the listener code doesn't need to change at all.
+With Drone Fly, the setup gets modified as shown in the diagram below. The only listener installed in the Hive metastore context is the [Apiary Kafka Listener](https://github.com/ExpediaGroup/apiary-extensions/tree/main/apiary-metastore-events/kafka-metastore-events/kafka-metastore-listener). This forwards the Hive events on to Kafka from which Drone Fly can retrieve them. The other listeners are moved out into separate contexts and receive the messages from Drone Fly which forwards them on as if they were Hive events so the listener code doesn't need to change at all.
 
 ![Hive Metastore setup with Drone Fly.](.README_images/drone-fly-after.png "Only one Hive metastore listener is deployed in HMS context and others are deployed in Drone Fly context")
 
@@ -38,7 +38,7 @@ Drone Fly can be set up to run in dockerized containers where each instance is i
 
 To install a new HMS listener within the Drone Fly context, it is recommended that you build your Docker image using the Drone Fly base [Docker image](https://hub.docker.com/r/expediagroup/drone-fly-app).
 
-A sample image to install the [Apiary-SNS-Listener](https://github.com/ExpediaGroup/apiary-extensions/tree/master/apiary-metastore-events/sns-metastore-events/apiary-metastore-listener) would be as follows:
+A sample image to install the [Apiary-SNS-Listener](https://github.com/ExpediaGroup/apiary-extensions/tree/main/apiary-metastore-events/sns-metastore-events/apiary-metastore-listener) would be as follows:
 
 ```
 from expediagroup/drone-fly-app:0.0.1
