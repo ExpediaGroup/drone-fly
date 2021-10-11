@@ -33,5 +33,7 @@ jobs:
         distribution: 'adopt'
         java-version: 8
         java-package: jdk
+        # this creates a settings.xml with the following server
+        settings-path: ${{ github.workspace }}
     - name: Run Maven Targets
       run: mvn package jacoco:report coveralls:report --batch-mode --show-version --activate-profiles coveralls -Dcoveralls.skip=$COVERALLS_SKIP -DrepoToken=${{ secrets.COVERALLS_REPO_TOKEN }}
