@@ -1,4 +1,4 @@
-name: Make a build
+name: Build with parameters
 on:
   workflow_dispatch:
     inputs:
