@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.expediagroup</groupId>
     <artifactId>drone-fly-parent</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.3</version>
   </parent>
 
   <artifactId>drone-fly-app</artifactId>
