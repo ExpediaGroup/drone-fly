@@ -5,7 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [0.0.4] - 2023-04-13
 ### Changed
-* Updated the Jupiter,
+* Upgrade `Springboot` version from `2.3.3.RELEASE` to `2.4.13`.
+* Upgrade `Springframework` version from `5.2.8.RELEASE` to `5.3.25`.
+* Upgrade `Mockito` version from `2.25.1` to `3.12.4`.
+
 
 ## [0.0.3] - 2021-12-14
 ### Changed
