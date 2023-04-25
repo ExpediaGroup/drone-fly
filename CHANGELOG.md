@@ -3,12 +3,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [0.0.4] - 2023-04-23
+## [1.0.0] - 2023-04-25
 ### Changed
-* Upgrade `Springboot` version from `2.3.3.RELEASE` to `2.7.10`.
+* Upgrade `Springboot` version from `2.3.3.RELEASE` to `2.7.10`. See [EGDL-4187] (https://jira.expedia.biz/browse/EGDL-4187).
 * Upgrade `Springframework` version from `5.2.8.RELEASE` to `5.3.25`.
 * Upgrade `Mockito` version from `2.25.1` to `3.12.4`.
-
 
 ## [0.0.3] - 2021-12-14
 ### Changed
