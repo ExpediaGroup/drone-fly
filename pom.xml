@@ -8,7 +8,7 @@
   </parent>
 
   <artifactId>drone-fly-parent</artifactId>
-  <version>0.0.4-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
   <inceptionYear>2020</inceptionYear>
   <packaging>pom</packaging>
 
