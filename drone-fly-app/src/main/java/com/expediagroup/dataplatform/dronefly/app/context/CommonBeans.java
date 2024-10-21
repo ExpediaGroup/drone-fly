@@ -16,6 +16,7 @@
 package com.expediagroup.dataplatform.dronefly.app.context;
 
 import java.util.List;
+import java.util.Properties;
 import java.util.stream.Collectors;
 
 import org.apache.hadoop.hive.conf.HiveConf;
@@ -65,7 +66,16 @@ public class CommonBeans {
 
   @Bean
   public MessageReaderAdapter messageReaderAdapter() {
-    KafkaMessageReader delegate = KafkaMessageReaderBuilder.builder(bootstrapServers, topicName, instanceName).build();
+    Properties mskProperties = new Properties();
+    mskProperties.put("security.protocol", "SSL");
+    mskProperties.put("sasl.mechanism", "AWS_MSK_IAM");
+    mskProperties.put("sasl.jaas.config", "software.amazon.msk.auth.iam.IAMLoginModule required;");
+    mskProperties.put("sasl.client.callback.handler.class", "software.amazon.msk.auth.iam.IAMClientCallbackHandler");
+
+    KafkaMessageReader delegate = KafkaMessageReaderBuilder.
+            builder(bootstrapServers, topicName, instanceName).
+            withConsumerProperties(mskProperties).
+            build();
     return new MessageReaderAdapter(delegate);
   }
 
