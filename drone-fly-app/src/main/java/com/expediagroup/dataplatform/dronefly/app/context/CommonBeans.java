@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.metastore.MetaStoreEventListener;
 import org.apache.hadoop.hive.metastore.api.MetaException;
@@ -50,6 +51,18 @@ public class CommonBeans {
   @Value("${apiary.listener.list:}")
   private String confListenerList;
 
+  @Value("${apiary.security.protocol:#{null}}")
+  private String securityProtol;
+
+  @Value("${apiary.sasl.mechanism:#{null}}")
+  private String saslMechanism;
+
+  @Value("${apiary.sasl.jaas.config:#{null}}")
+  private String saslJaasConfig;
+
+  @Value("${apiary.sasl.client.callback.handler.class:#{null}}")
+  private String saslHandlerClass;
+
   @Bean
   public HiveConf hiveConf() {
     return new HiveConf();
@@ -66,17 +79,23 @@ public class CommonBeans {
 
   @Bean
   public MessageReaderAdapter messageReaderAdapter() {
-    Properties mskProperties = new Properties();
-    mskProperties.put("security.protocol", "SSL");
-    mskProperties.put("sasl.mechanism", "AWS_MSK_IAM");
-    mskProperties.put("sasl.jaas.config", "software.amazon.msk.auth.iam.IAMLoginModule required;");
-    mskProperties.put("sasl.client.callback.handler.class", "software.amazon.msk.auth.iam.IAMClientCallbackHandler");
+    Properties clientProperties = getClientProperties();
 
     KafkaMessageReader delegate = KafkaMessageReaderBuilder.
             builder(bootstrapServers, topicName, instanceName).
-            withConsumerProperties(mskProperties).
+            withConsumerProperties(clientProperties).
             build();
     return new MessageReaderAdapter(delegate);
+  }
+
+  private Properties getClientProperties() {
+    Properties clientProperties = new Properties();
+    if (StringUtils.isNotBlank(securityProtol)) { clientProperties.put("security.protocol", securityProtol); }
+    if (StringUtils.isNotBlank(saslMechanism)) { clientProperties.put("sasl.mechanism", saslMechanism); }
+    if (StringUtils.isNotBlank(saslJaasConfig)) { clientProperties.put("sasl.jaas.config", saslJaasConfig); }
+    if (StringUtils.isNotBlank(saslHandlerClass)) { clientProperties.put("sasl.client.callback.handler.class",
+            saslHandlerClass); }
+    return clientProperties;
   }
 
 }
