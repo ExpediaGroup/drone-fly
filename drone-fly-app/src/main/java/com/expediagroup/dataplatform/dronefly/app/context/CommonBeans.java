@@ -26,6 +26,7 @@ import org.apache.hadoop.hive.metastore.api.MetaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -34,10 +35,12 @@ import com.expediagroup.apiary.extensions.events.metastore.kafka.messaging.Kafka
 import com.expediagroup.dataplatform.dronefly.app.messaging.MessageReaderAdapter;
 import com.expediagroup.dataplatform.dronefly.app.service.ListenerCatalog;
 import com.expediagroup.dataplatform.dronefly.app.service.factory.ListenerCatalogFactory;
+import org.springframework.context.annotation.Primary;
 
 @Configuration
 public class CommonBeans {
   private static final Logger log = LoggerFactory.getLogger(CommonBeans.class);
+  public static final String PREFIX = "apiary.messaging.client.";
 
   @Value("${instance.name:drone-fly}")
   private String instanceName;
@@ -51,21 +54,16 @@ public class CommonBeans {
   @Value("${apiary.listener.list:}")
   private String confListenerList;
 
-  @Value("${apiary.security.protocol:#{null}}")
-  private String securityProtol;
-
-  @Value("${apiary.sasl.mechanism:#{null}}")
-  private String saslMechanism;
-
-  @Value("${apiary.sasl.jaas.config:#{null}}")
-  private String saslJaasConfig;
-
-  @Value("${apiary.sasl.client.callback.handler.class:#{null}}")
-  private String saslHandlerClass;
-
   @Bean
   public HiveConf hiveConf() {
     return new HiveConf();
+  }
+
+  @Bean
+  @Primary
+  @ConfigurationProperties
+  public Properties getEnvProperties() {
+    return new Properties();
   }
 
   @Bean
@@ -80,7 +78,6 @@ public class CommonBeans {
   @Bean
   public MessageReaderAdapter messageReaderAdapter() {
     Properties clientProperties = getClientProperties();
-
     KafkaMessageReader delegate = KafkaMessageReaderBuilder.
             builder(bootstrapServers, topicName, instanceName).
             withConsumerProperties(clientProperties).
@@ -90,11 +87,13 @@ public class CommonBeans {
 
   private Properties getClientProperties() {
     Properties clientProperties = new Properties();
-    if (StringUtils.isNotBlank(securityProtol)) { clientProperties.put("security.protocol", securityProtol); }
-    if (StringUtils.isNotBlank(saslMechanism)) { clientProperties.put("sasl.mechanism", saslMechanism); }
-    if (StringUtils.isNotBlank(saslJaasConfig)) { clientProperties.put("sasl.jaas.config", saslJaasConfig); }
-    if (StringUtils.isNotBlank(saslHandlerClass)) { clientProperties.put("sasl.client.callback.handler.class",
-            saslHandlerClass); }
+    getEnvProperties().forEach((key, value) -> {
+      if (key.toString().startsWith(PREFIX)) {
+        String keyWithoutPrefix = StringUtils.replace(key.toString(), PREFIX, "");
+        clientProperties.put(keyWithoutPrefix, value.toString());
+        log.info("Client property {} set with value: {}", keyWithoutPrefix, value);
+      }
+    } );
     return clientProperties;
   }
 
