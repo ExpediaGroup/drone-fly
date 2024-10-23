@@ -60,7 +60,7 @@ public class CommonBeans {
 
   @Bean
   @Primary
-  @ConfigurationProperties
+  @ConfigurationProperties(PREFIX)
   public Properties getEnvProperties() {
     return new Properties();
   }
