@@ -76,10 +76,10 @@ public class CommonBeans {
 
   @Bean
   public MessageReaderAdapter messageReaderAdapter() {
-    Properties clientProperties = getConsumerProperties();
+    Properties consumerProperties = getConsumerProperties();
     KafkaMessageReader delegate = KafkaMessageReaderBuilder.
             builder(bootstrapServers, topicName, instanceName).
-            withConsumerProperties(clientProperties).
+            withConsumerProperties(consumerProperties).
             build();
     return new MessageReaderAdapter(delegate);
   }
@@ -88,7 +88,7 @@ public class CommonBeans {
     Properties consumerProperties = new Properties();
     getEnvProperties().forEach((key, value) -> {
         consumerProperties.put(key.toString(), value.toString());
-        log.info("Client property {} set with value: {}", key, value);
+        log.info("Consumer property {} set with value: {}", key, value);
     } );
     return consumerProperties;
   }
