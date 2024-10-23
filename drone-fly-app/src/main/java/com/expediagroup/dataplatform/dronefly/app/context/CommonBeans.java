@@ -39,7 +39,7 @@ import org.springframework.context.annotation.Primary;
 @Configuration
 public class CommonBeans {
   private static final Logger log = LoggerFactory.getLogger(CommonBeans.class);
-  public static final String PREFIX = "apiary.messaging.consumer";
+  public static final String CONSUMER_PROPERTIES_PREFIX = "apiary.messaging.consumer";
 
   @Value("${instance.name:drone-fly}")
   private String instanceName;
@@ -60,7 +60,7 @@ public class CommonBeans {
 
   @Bean
   @Primary
-  @ConfigurationProperties(PREFIX)
+  @ConfigurationProperties(CONSUMER_PROPERTIES_PREFIX)
   public Properties getEnvProperties() {
     return new Properties();
   }
