@@ -16,6 +16,7 @@
 package com.expediagroup.dataplatform.dronefly.app.context;
 
 import java.util.List;
+import java.util.Properties;
 import java.util.stream.Collectors;
 
 import org.apache.hadoop.hive.conf.HiveConf;
@@ -24,6 +25,7 @@ import org.apache.hadoop.hive.metastore.api.MetaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -32,10 +34,12 @@ import com.expediagroup.apiary.extensions.events.metastore.kafka.messaging.Kafka
 import com.expediagroup.dataplatform.dronefly.app.messaging.MessageReaderAdapter;
 import com.expediagroup.dataplatform.dronefly.app.service.ListenerCatalog;
 import com.expediagroup.dataplatform.dronefly.app.service.factory.ListenerCatalogFactory;
+import org.springframework.context.annotation.Primary;
 
 @Configuration
 public class CommonBeans {
   private static final Logger log = LoggerFactory.getLogger(CommonBeans.class);
+  public static final String CONSUMER_PROPERTIES_PREFIX = "apiary.messaging.consumer";
 
   @Value("${instance.name:drone-fly}")
   private String instanceName;
@@ -55,6 +59,13 @@ public class CommonBeans {
   }
 
   @Bean
+  @Primary
+  @ConfigurationProperties(CONSUMER_PROPERTIES_PREFIX)
+  public Properties getEnvProperties() {
+    return new Properties();
+  }
+
+  @Bean
   public ListenerCatalog listenerCatalog(HiveConf conf) throws MetaException {
     ListenerCatalog listenerCatalog = new ListenerCatalogFactory(conf).newInstance(confListenerList);
     List<MetaStoreEventListener> listenerList = listenerCatalog.getListeners();
@@ -65,8 +76,21 @@ public class CommonBeans {
 
   @Bean
   public MessageReaderAdapter messageReaderAdapter() {
-    KafkaMessageReader delegate = KafkaMessageReaderBuilder.builder(bootstrapServers, topicName, instanceName).build();
+    Properties consumerProperties = getConsumerProperties();
+    KafkaMessageReader delegate = KafkaMessageReaderBuilder.
+            builder(bootstrapServers, topicName, instanceName).
+            withConsumerProperties(consumerProperties).
+            build();
     return new MessageReaderAdapter(delegate);
+  }
+
+  private Properties getConsumerProperties() {
+    Properties consumerProperties = new Properties();
+    getEnvProperties().forEach((key, value) -> {
+        consumerProperties.put(key.toString(), value.toString());
+        log.info("Consumer property {} set with value: {}", key, value);
+    } );
+    return consumerProperties;
   }
 
 }
