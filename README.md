@@ -91,14 +91,14 @@ The table below describes all the available configuration values for Drone Fly.
 | endpoint.port | Port on which Drone Fly Spring Boot app will start. | `string` | `8008` | no |
 
 ### Additional configuration parameters
-The Kafka message reader supports client properties that are passed to the Kafka consumer builder.
-These are environment variables with the PREFIX apiary.messaging.client.
+The Kafka message reader supports properties that are passed to the Kafka consumer builder.
+These are environment variables with the PREFIX apiary.messaging.consumer.
 
- #### Example for sending client parameters when using a Kafka cloud provider
-- apiary.messaging.client.security.protocol=SSL
-- apiary.messaging.client.sasl.mechanism=AWS_MSK_IAM
-- apiary.messaging.client.sasl_jaas.config=software.amazon.msk.auth.iam.IAMLoginModule required;
-- apiary.messaging.client.sasl.client.callback.handler.class=software.amazon.msk.auth.iam.IAMClientCallbackHandler
+ #### Example for sending consumer parameters when using a Kafka cloud provider
+- apiary.messaging.consumer.security.protocol=SSL
+- apiary.messaging.consumer.sasl.mechanism=AWS_MSK_IAM
+- apiary.messaging.consumer.sasl_jaas.config=software.amazon.msk.auth.iam.IAMLoginModule required;
+- apiary.messaging.consumer.sasl.client.callback.handler.class=software.amazon.msk.auth.iam.IAMClientCallbackHandler
 
 In this case we are sending the properties to Kafka's consumer to be able to connect to AWS MSK which also requires the IAM library included as a dependency in the POM.xml file
 
@@ -106,10 +106,10 @@ In this case we are sending the properties to Kafka's consumer to be able to con
 		--apiary.bootstrap.servers=localhost:9092 \
 		--apiary.kafka.topic.name=apiary \
 		--apiary.listener.list="com.expediagroup.sampleListener1,com.expediagroup.sampleListener2" \
-        --apiary.messaging.client.security.protocol=SSL \
-        --apiary.messaging.client.sasl.mechanism=AWS_MSK_IAM \
-        --apiary.messaging.client.sasl_jaas.config=software.amazon.msk.auth.iam.IAMLoginModule required; \
-        --apiary.messaging.client.sasl.client.callback.handler.class=software.amazon.msk.auth.iam.IAMClientCallbackHandler
+        --apiary.messaging.consumer.security.protocol=SSL \
+        --apiary.messaging.consumer.sasl.mechanism=AWS_MSK_IAM \
+        --apiary.messaging.consumer.sasl_jaas.config=software.amazon.msk.auth.iam.IAMLoginModule required; \
+        --apiary.messaging.consumer.sasl.client.callback.handler.class=software.amazon.msk.auth.iam.IAMClientCallbackHandler
 
 ## Metrics
 

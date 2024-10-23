@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.metastore.MetaStoreEventListener;
 import org.apache.hadoop.hive.metastore.api.MetaException;
@@ -40,7 +39,7 @@ import org.springframework.context.annotation.Primary;
 @Configuration
 public class CommonBeans {
   private static final Logger log = LoggerFactory.getLogger(CommonBeans.class);
-  public static final String PREFIX = "apiary.messaging.client.";
+  public static final String PREFIX = "apiary.messaging.consumer";
 
   @Value("${instance.name:drone-fly}")
   private String instanceName;
@@ -77,7 +76,7 @@ public class CommonBeans {
 
   @Bean
   public MessageReaderAdapter messageReaderAdapter() {
-    Properties clientProperties = getClientProperties();
+    Properties clientProperties = getConsumerProperties();
     KafkaMessageReader delegate = KafkaMessageReaderBuilder.
             builder(bootstrapServers, topicName, instanceName).
             withConsumerProperties(clientProperties).
@@ -85,16 +84,13 @@ public class CommonBeans {
     return new MessageReaderAdapter(delegate);
   }
 
-  private Properties getClientProperties() {
-    Properties clientProperties = new Properties();
+  private Properties getConsumerProperties() {
+    Properties consumerProperties = new Properties();
     getEnvProperties().forEach((key, value) -> {
-      if (key.toString().startsWith(PREFIX)) {
-        String keyWithoutPrefix = StringUtils.replace(key.toString(), PREFIX, "");
-        clientProperties.put(keyWithoutPrefix, value.toString());
-        log.info("Client property {} set with value: {}", keyWithoutPrefix, value);
-      }
+        consumerProperties.put(key.toString(), value.toString());
+        log.info("Client property {} set with value: {}", key, value);
     } );
-    return clientProperties;
+    return consumerProperties;
   }
 
 }
