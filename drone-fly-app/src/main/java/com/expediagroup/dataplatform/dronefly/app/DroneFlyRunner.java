@@ -28,22 +28,27 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import com.expediagroup.dataplatform.dronefly.app.service.DroneFlyNotificationService;
+import com.expediagroup.dataplatform.dronefly.app.service.factory.MetricFactory;
 import com.expediagroup.dataplatform.dronefly.core.exception.DroneFlyException;
 
 @Component
 public class DroneFlyRunner implements ApplicationRunner {
   private static final Logger log = LoggerFactory.getLogger(DroneFlyRunner.class);
   private final DroneFlyNotificationService droneFlyNotificationService;
+  private final MetricFactory metricFactory;
   private final AtomicBoolean running = new AtomicBoolean(false);
 
   @Autowired
-  public DroneFlyRunner(DroneFlyNotificationService droneFlyNotificationService) {
+  public DroneFlyRunner(DroneFlyNotificationService droneFlyNotificationService,
+      MetricFactory metricFactory) {
     this.droneFlyNotificationService = droneFlyNotificationService;
+    this.metricFactory = metricFactory;
   }
 
   @Override
   public void run(ApplicationArguments args) {
     running.set(true);
+    metricFactory.init();
     while (running.get()) {
       try {
         droneFlyNotificationService.notifyListeners();
