@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -38,11 +39,13 @@
     <dockerhub.url>docker.io</dockerhub.url>
     <log4j2.version>2.17.1</log4j2.version>
     <msk.iam.version>1.1.9</msk.iam.version>
+    <dropwizard.version>3.1.0</dropwizard.version>
   </properties>
 
   <scm>
     <connection>scm:git:https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/ExpediaGroup/drone-fly.git</connection>
-    <developerConnection>scm:git:https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/ExpediaGroup/drone-fly.git</developerConnection>
+    <developerConnection>scm:git:https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/ExpediaGroup/drone-fly.git
+    </developerConnection>
     <url>https://github.com/ExpediaGroup/drone-fly</url>
     <tag>drone-fly-parent-1.0.1</tag>
   </scm>
@@ -81,8 +84,8 @@
         <artifactId>logback-core</artifactId>
         <version>${logback.version}</version>
       </dependency>
-      
-       <!-- Log4j v2 -->
+
+      <!-- Log4j v2 -->
       <dependency>
         <groupId>org.apache.logging.log4j</groupId>
         <artifactId>log4j-core</artifactId>
@@ -118,7 +121,7 @@
         <artifactId>log4j-to-slf4j</artifactId>
         <version>${log4j2.version}</version>
       </dependency>
-      
+
       <dependency>
         <groupId>org.awaitility</groupId>
         <artifactId>awaitility</artifactId>

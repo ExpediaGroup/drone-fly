@@ -34,6 +34,8 @@ import com.expediagroup.apiary.extensions.events.metastore.kafka.messaging.Kafka
 import com.expediagroup.dataplatform.dronefly.app.messaging.MessageReaderAdapter;
 import com.expediagroup.dataplatform.dronefly.app.service.ListenerCatalog;
 import com.expediagroup.dataplatform.dronefly.app.service.factory.ListenerCatalogFactory;
+import com.expediagroup.dataplatform.dronefly.app.service.factory.MetricFactory;
+
 import org.springframework.context.annotation.Primary;
 
 @Configuration
@@ -82,6 +84,11 @@ public class CommonBeans {
             withConsumerProperties(consumerProperties).
             build();
     return new MessageReaderAdapter(delegate);
+  }
+
+  @Bean
+  public MetricFactory metricFactory(HiveConf conf) {
+    return new MetricFactory(conf);
   }
 
   private Properties getConsumerProperties() {
