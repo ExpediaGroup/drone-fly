@@ -18,9 +18,9 @@ public class MetricFactory {
   public void init() {
     try {
       MetricsFactory.init(hiveConf);
-      log.error("Hive metrics initialized");
+      log.info("Hive metrics initialized");
     } catch (Exception e) {
-      log.error("Metrics could not be init", e);
+      log.error("Metrics could not be initialized", e);
     }
   }
 }
