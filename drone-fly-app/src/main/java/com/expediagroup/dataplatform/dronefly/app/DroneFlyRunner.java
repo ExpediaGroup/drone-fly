@@ -20,16 +20,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.PreDestroy;
 
-import org.apache.hadoop.hive.common.metrics.common.Metrics;
-import org.apache.hadoop.hive.common.metrics.common.MetricsFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
-
-import com.codahale.metrics.MetricRegistry;
 
 import com.expediagroup.dataplatform.dronefly.app.service.DroneFlyNotificationService;
 import com.expediagroup.dataplatform.dronefly.core.exception.DroneFlyException;

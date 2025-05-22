@@ -28,19 +28,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import com.expediagroup.apiary.extensions.events.metastore.kafka.messaging.KafkaMessageReader;
 import com.expediagroup.apiary.extensions.events.metastore.kafka.messaging.KafkaMessageReader.KafkaMessageReaderBuilder;
 import com.expediagroup.dataplatform.dronefly.app.messaging.MessageReaderAdapter;
-import com.expediagroup.dataplatform.dronefly.app.metrics.DropwizardToMicrometerBridge;
 import com.expediagroup.dataplatform.dronefly.app.service.ListenerCatalog;
 import com.expediagroup.dataplatform.dronefly.app.service.factory.ListenerCatalogFactory;
-
-import org.springframework.context.annotation.Primary;
-
-import io.micrometer.core.instrument.MeterRegistry;
-
-import com.codahale.metrics.MetricRegistry;
 
 @Configuration
 public class CommonBeans {
@@ -89,11 +83,6 @@ public class CommonBeans {
         withConsumerProperties(consumerProperties).
         build();
     return new MessageReaderAdapter(delegate);
-  }
-
-  @Bean
-  MetricRegistry metricRegistry() {
-    return new MetricRegistry();
   }
 
   private Properties getConsumerProperties() {
