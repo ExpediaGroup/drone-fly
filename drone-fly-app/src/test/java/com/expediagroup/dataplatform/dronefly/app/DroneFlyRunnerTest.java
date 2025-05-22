@@ -34,8 +34,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.ApplicationArguments;
 
+import com.codahale.metrics.MetricRegistry;
+
 import com.expediagroup.dataplatform.dronefly.app.service.DroneFlyNotificationService;
-import com.expediagroup.dataplatform.dronefly.app.service.factory.MetricFactory;
 
 @ExtendWith(MockitoExtension.class)
 public class DroneFlyRunnerTest {
@@ -44,14 +45,13 @@ public class DroneFlyRunnerTest {
   private ApplicationArguments args;
 
   private @Mock DroneFlyNotificationService droneFlyNotificationService;
-  private @Mock MetricFactory metricFactory;
 
   private DroneFlyRunner runner;
   private final ExecutorService executor = Executors.newFixedThreadPool(1);
 
   @BeforeEach
   public void init() {
-    runner = new DroneFlyRunner(droneFlyNotificationService, metricFactory);
+    runner = new DroneFlyRunner(droneFlyNotificationService);
   }
 
   @Test
@@ -61,7 +61,6 @@ public class DroneFlyRunnerTest {
         .atMost(Duration.FIVE_SECONDS)
         .untilAsserted(() -> {
               verify(droneFlyNotificationService, atLeast(1)).notifyListeners();
-              verify(metricFactory, atLeast(1)).init();
             }
         );
     destroy();
@@ -76,7 +75,6 @@ public class DroneFlyRunnerTest {
         .atMost(Duration.FIVE_SECONDS)
         .untilAsserted(() -> {
               verify(droneFlyNotificationService, atLeast(3)).notifyListeners();
-              verify(metricFactory, atLeast(1)).init();
             }
         );
     destroy();

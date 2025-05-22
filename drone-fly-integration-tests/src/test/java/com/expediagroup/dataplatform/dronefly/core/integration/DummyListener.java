@@ -17,8 +17,12 @@ package com.expediagroup.dataplatform.dronefly.core.integration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import javax.annotation.PostConstruct;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hive.common.metrics.common.MetricsFactory;
 import org.apache.hadoop.hive.metastore.MetaStoreEventListener;
 import org.apache.hadoop.hive.metastore.api.MetaException;
 import org.apache.hadoop.hive.metastore.events.AddPartitionEvent;
@@ -35,9 +39,18 @@ import org.apache.hadoop.hive.metastore.events.DropTableEvent;
 import org.apache.hadoop.hive.metastore.events.ListenerEvent;
 import org.apache.hadoop.hive.metastore.events.LoadPartitionDoneEvent;
 
+import io.micrometer.core.instrument.Clock;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Metrics;
+
+import com.codahale.metrics.MetricRegistry;
+
 public class DummyListener extends MetaStoreEventListener {
 
   public static final List<ListenerEvent> notifyList = new ArrayList<>();
+  private static final AtomicInteger gaugeValue = new AtomicInteger(0);
 
   /**
    * @return The last event received, or null if no event was received.
@@ -57,7 +70,14 @@ public class DummyListener extends MetaStoreEventListener {
     if (notifyList.isEmpty()) {
       return null;
     } else {
-      return notifyList.get(index);
+      ListenerEvent listenerEvent = notifyList.get(index);
+      Gauge.builder("my_app_gauge", gaugeValue, AtomicInteger::get)
+          .description("A sample gauge")
+          .register(Metrics.globalRegistry);
+      gaugeValue.incrementAndGet();
+      gaugeValue.incrementAndGet();
+      gaugeValue.incrementAndGet();
+      return listenerEvent;
     }
   }
 

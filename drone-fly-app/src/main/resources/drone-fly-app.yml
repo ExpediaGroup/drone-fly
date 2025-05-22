@@ -1,1 +1,2 @@
 management.endpoints.web.exposure.include: health,info,prometheus
+management.endpoint.prometheus.enabled: true
