@@ -34,8 +34,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.ApplicationArguments;
 
-import com.codahale.metrics.MetricRegistry;
-
 import com.expediagroup.dataplatform.dronefly.app.service.DroneFlyNotificationService;
 
 @ExtendWith(MockitoExtension.class)
