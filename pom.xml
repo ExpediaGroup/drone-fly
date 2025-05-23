@@ -8,7 +8,7 @@
   </parent>
 
   <artifactId>drone-fly-parent</artifactId>
-  <version>1.0.4</version>
+  <version>1.0.5-SNAPSHOT</version>
   <inceptionYear>2020</inceptionYear>
   <packaging>pom</packaging>
 
@@ -46,7 +46,7 @@
     <developerConnection>scm:git:https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/ExpediaGroup/drone-fly.git
     </developerConnection>
     <url>https://github.com/ExpediaGroup/drone-fly</url>
-    <tag>drone-fly-parent-1.0.4</tag>
+    <tag>drone-fly-parent-1.0.1</tag>
   </scm>
 
   <dependencyManagement>
