@@ -35,9 +35,14 @@ import org.apache.hadoop.hive.metastore.events.DropTableEvent;
 import org.apache.hadoop.hive.metastore.events.ListenerEvent;
 import org.apache.hadoop.hive.metastore.events.LoadPartitionDoneEvent;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.Metrics;
+
 public class DummyListener extends MetaStoreEventListener {
 
   public static final List<ListenerEvent> notifyList = new ArrayList<>();
+  public static final Counter EVENT_COUNT_METRIC = Counter.builder("EVENT_COUNT_CUSTOM_METRIC")
+      .register(Metrics.globalRegistry);
 
   /**
    * @return The last event received, or null if no event was received.
@@ -57,7 +62,9 @@ public class DummyListener extends MetaStoreEventListener {
     if (notifyList.isEmpty()) {
       return null;
     } else {
-      return notifyList.get(index);
+      ListenerEvent listenerEvent = notifyList.get(index);
+      EVENT_COUNT_METRIC.increment();
+      return listenerEvent;
     }
   }
 

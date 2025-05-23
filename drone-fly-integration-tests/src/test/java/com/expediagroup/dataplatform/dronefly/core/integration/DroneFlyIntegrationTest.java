@@ -30,6 +30,7 @@ import static com.expediagroup.dataplatform.dronefly.core.integration.DroneFlyIn
 import static com.expediagroup.dataplatform.dronefly.core.integration.DroneFlyIntegrationTestUtils.buildPartition;
 import static com.expediagroup.dataplatform.dronefly.core.integration.DroneFlyIntegrationTestUtils.buildTable;
 import static com.expediagroup.dataplatform.dronefly.core.integration.DroneFlyIntegrationTestUtils.buildTableParameters;
+import static com.expediagroup.dataplatform.dronefly.core.integration.DummyListener.EVENT_COUNT_METRIC;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -140,6 +141,7 @@ public class DroneFlyIntegrationTest {
 
     assertEvent(receivedEventOne, ADD_PARTITION);
     assertEvent(receivedEventTwo, CREATE_TABLE);
+    assertThat(EVENT_COUNT_METRIC.count()).isEqualTo(2.0);
   }
 
   private void assertEvent(ListenerEvent event, EventType eventType) {
@@ -192,5 +194,4 @@ public class DroneFlyIntegrationTest {
 
     kafkaMetaStoreEventListener = new KafkaMetaStoreEventListener(CONF);
   }
-
 }

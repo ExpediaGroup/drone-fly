@@ -28,18 +28,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import com.expediagroup.apiary.extensions.events.metastore.kafka.messaging.KafkaMessageReader;
 import com.expediagroup.apiary.extensions.events.metastore.kafka.messaging.KafkaMessageReader.KafkaMessageReaderBuilder;
 import com.expediagroup.dataplatform.dronefly.app.messaging.MessageReaderAdapter;
 import com.expediagroup.dataplatform.dronefly.app.service.ListenerCatalog;
 import com.expediagroup.dataplatform.dronefly.app.service.factory.ListenerCatalogFactory;
-import com.expediagroup.dataplatform.dronefly.app.service.factory.MetricFactory;
-
-import org.springframework.context.annotation.Primary;
 
 @Configuration
 public class CommonBeans {
+
   private static final Logger log = LoggerFactory.getLogger(CommonBeans.class);
   public static final String CONSUMER_PROPERTIES_PREFIX = "apiary.messaging.consumer";
 
@@ -80,24 +79,18 @@ public class CommonBeans {
   public MessageReaderAdapter messageReaderAdapter() {
     Properties consumerProperties = getConsumerProperties();
     KafkaMessageReader delegate = KafkaMessageReaderBuilder.
-            builder(bootstrapServers, topicName, instanceName).
-            withConsumerProperties(consumerProperties).
-            build();
+        builder(bootstrapServers, topicName, instanceName).
+        withConsumerProperties(consumerProperties).
+        build();
     return new MessageReaderAdapter(delegate);
-  }
-
-  @Bean
-  public MetricFactory metricFactory(HiveConf conf) {
-    return new MetricFactory(conf);
   }
 
   private Properties getConsumerProperties() {
     Properties consumerProperties = new Properties();
     getEnvProperties().forEach((key, value) -> {
-        consumerProperties.put(key.toString(), value.toString());
-        log.info("Consumer property {} set with value: {}", key, value);
-    } );
+      consumerProperties.put(key.toString(), value.toString());
+      log.info("Consumer property {} set with value: {}", key, value);
+    });
     return consumerProperties;
   }
-
 }
