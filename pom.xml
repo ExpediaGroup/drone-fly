@@ -183,9 +183,6 @@
           <configuration>
             <from>
               <image>${docker.from.reference}</image>
-            </from>
-            <to>
-              <image>${docker.to.reference}</image>
               <platforms>
                   <platform>
                       <architecture>amd64</architecture>
@@ -195,7 +192,10 @@
                       <architecture>arm64</architecture>
                       <os>linux</os>
                   </platform>
-              </platforms>              
+              </platforms>  
+            </from>
+            <to>
+              <image>${docker.to.reference}</image>            
               <auth>
                 <username>${DOCKERHUB_USERNAME}</username>
                 <password>${DOCKERHUB_PASSWORD}</password>
