@@ -186,6 +186,16 @@
             </from>
             <to>
               <image>${docker.to.reference}</image>
+              <platforms>
+                  <platform>
+                      <architecture>amd64</architecture>
+                      <os>linux</os>
+                  </platform>
+                  <platform>
+                      <architecture>arm64</architecture>
+                      <os>linux</os>
+                  </platform>
+              </platforms>              
               <auth>
                 <username>${DOCKERHUB_USERNAME}</username>
                 <password>${DOCKERHUB_PASSWORD}</password>
