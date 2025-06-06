@@ -27,7 +27,7 @@
     <springframework.version>5.3.25</springframework.version>
     <logback.version>1.2.3</logback.version>
     <maven.shade.plugin.version>3.2.4</maven.shade.plugin.version>
-    <jib.maven.plugin.version>2.5.2</jib.maven.plugin.version>
+    <jib.maven.plugin.version>3.4.3</jib.maven.plugin.version>
     <docker.from.image>openjdk</docker.from.image>
     <docker.from.tag>8-jdk</docker.from.tag>
     <docker.from.reference>${docker.from.image}:${docker.from.tag}</docker.from.reference>
@@ -183,9 +183,19 @@
           <configuration>
             <from>
               <image>${docker.from.reference}</image>
+              <platforms>
+                  <platform>
+                      <architecture>amd64</architecture>
+                      <os>linux</os>
+                  </platform>
+                  <platform>
+                      <architecture>arm64</architecture>
+                      <os>linux</os>
+                  </platform>
+              </platforms>  
             </from>
             <to>
-              <image>${docker.to.reference}</image>
+              <image>${docker.to.reference}</image>            
               <auth>
                 <username>${DOCKERHUB_USERNAME}</username>
                 <password>${DOCKERHUB_PASSWORD}</password>
