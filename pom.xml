@@ -157,9 +157,53 @@
     </dependency>
   </dependencies>
 
+  <distributionManagement>
+    <repository>
+      <id>sonatype-nexus</id>
+      <url>https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/</url>
+    </repository>
+    <snapshotRepository>
+      <id>sonatype-nexus</id>
+      <url>https://ossrh-staging-api.central.sonatype.com/content/repositories/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
+  
   <build>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>org.sonatype.plugins</groupId>
+          <artifactId>nexus-staging-maven-plugin</artifactId>
+          <version>${nexus.staging.maven.plugin.version}</version>
+          <extensions>true</extensions>
+          <configuration>
+            <serverId>sonatype-nexus-staging</serverId>
+            <nexusUrl>https://ossrh-staging-api.central.sonatype.com</nexusUrl>
+            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+          </configuration>
+        </plugin>
+          <plugin>
+            <artifactId>maven-deploy-plugin</artifactId>
+            <version>3.1.4</version>
+            <executions>
+              <execution>
+                <id>default-deploy</id>
+                <phase>deploy</phase>
+                <goals>
+                  <goal>deploy</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>    
+    <!--      <plugin>
+              <groupId>org.sonatype.central</groupId>
+              <artifactId>central-publishing-maven-plugin</artifactId>
+              <version>0.8.0</version>
+              <extensions>true</extensions>
+              <configuration>
+                <publishingServerId>sonatype-nexus</publishingServerId>
+              </configuration>
+          </plugin> -->         
         <plugin>
           <groupId>com.google.cloud.tools</groupId>
           <artifactId>jib-maven-plugin</artifactId>
