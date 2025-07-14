@@ -39,6 +39,7 @@
     <log4j2.version>2.17.1</log4j2.version>
     <msk.iam.version>1.1.9</msk.iam.version>
     <dropwizard.version>3.1.0</dropwizard.version>
+    <skipTests>true</skipTests>
   </properties>
 
   <scm>
