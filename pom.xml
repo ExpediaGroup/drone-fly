@@ -165,7 +165,7 @@
     </repository>
     <snapshotRepository>
       <id>sonatype-nexus</id>
-      <url>https://ossrh-staging-api.central.sonatype.com/content/repositories/snapshots</url>
+      <url>https://ossrh-staging-api.central.sonatype.com/content/repositories/snapshots/</url>
     </snapshotRepository>
   </distributionManagement>
   
