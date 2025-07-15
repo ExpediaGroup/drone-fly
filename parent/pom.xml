@@ -88,17 +88,6 @@
     <spotless.config.execution.skip>false</spotless.config.execution.skip>
   </properties>
 
-<!--  <distributionManagement>-->
-<!--    <snapshotRepository>-->
-<!--      <id>sonatype-nexus-snapshots</id>-->
-<!--      <url>https://oss.sonatype.org/content/repositories/snapshots</url>-->
-<!--    </snapshotRepository>-->
-<!--    <repository>-->
-<!--      <id>sonatype-nexus-staging</id>-->
-<!--      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
-<!--    </repository>-->
-<!--  </distributionManagement>-->
-
   <build>
     <plugins>
       <plugin>
@@ -318,17 +307,6 @@
           </execution>
         </executions>
       </plugin>
-<!--      <plugin>-->
-<!--        <groupId>org.sonatype.plugins</groupId>-->
-<!--        <artifactId>nexus-staging-maven-plugin</artifactId>-->
-<!--        <version>${nexus.staging.maven.plugin.version}</version>-->
-<!--        <extensions>true</extensions>-->
-<!--        <configuration>-->
-<!--          <serverId>sonatype-nexus-staging</serverId>-->
-<!--          <nexusUrl>https://oss.sonatype.org/</nexusUrl>-->
-<!--          <autoReleaseAfterClose>true</autoReleaseAfterClose>-->
-<!--        </configuration>-->
-<!--      </plugin>-->
     </plugins>
 
     <pluginManagement>
@@ -472,50 +450,21 @@
         </plugins>
       </build>
     </profile>
-<!--
-        The profile `sonatype-oss-release` is going to be deprecated in the future because we will use
-        `sonatype-oss-release-github-actions` instead, which allows to do releases in Github instead of Jenkins.
-        The `sonatype-oss-release-github-actions` profile doesn't work in Jenkins so we will leave it here for
-        backwards compatibility, but you should migrate to use that one whenever it is possible.
--->
-    <profile>
-      <id>sonatype-oss-release</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <version>${maven.gpg.plugin.version}</version>
-            <executions>
-              <execution>
-                <id>sign-artifacts</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-            <version>${maven.source.plugin.version}</version>
-            <executions>
-              <execution>
-                <id>attach-sources</id>
-                <goals>
-                  <goal>jar-no-fork</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
     <profile>
       <id>sonatype-oss-release-github-actions</id>
       <build>
         <plugins>
+          <plugin>
+              <groupId>org.sonatype.central</groupId>
+              <artifactId>central-publishing-maven-plugin</artifactId>
+              <version>0.8.0</version>
+              <extensions>true</extensions>
+              <configuration>
+                <publishingServerId>central</publishingServerId>
+                <autoPublish>true</autoPublish>
+                <waitUntil>published</waitUntil>                
+              </configuration>
+          </plugin>         
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
