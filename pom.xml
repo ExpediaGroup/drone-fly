@@ -158,31 +158,31 @@
     </dependency>
   </dependencies>
 
-  <distributionManagement>
-    <repository>
-      <id>sonatype-nexus</id>
-      <url>https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/</url>
-    </repository>
-    <snapshotRepository>
-      <id>sonatype-nexus</id>
-      <url>https://central.sonatype.com/repository/maven-snapshots/</url>
-    </snapshotRepository>
-  </distributionManagement>
+<!--  <distributionManagement>-->
+<!--    <repository>-->
+<!--      <id>sonatype-nexus</id>-->
+<!--      <url>https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/</url>-->
+<!--    </repository>-->
+<!--    <snapshotRepository>-->
+<!--      <id>sonatype-nexus</id>-->
+<!--      <url>https://central.sonatype.com/repository/maven-snapshots/</url>-->
+<!--    </snapshotRepository>-->
+<!--  </distributionManagement>-->
   
   <build>
     <pluginManagement>
       <plugins>
-        <plugin>
-          <groupId>org.sonatype.plugins</groupId>
-          <artifactId>nexus-staging-maven-plugin</artifactId>
-          <version>${nexus.staging.maven.plugin.version}</version>
-          <extensions>true</extensions>
-          <configuration>
-            <serverId>sonatype-nexus</serverId>
-            <nexusUrl>https://ossrh-staging-api.central.sonatype.com</nexusUrl>
-            <autoReleaseAfterClose>true</autoReleaseAfterClose>
-          </configuration>
-        </plugin>
+<!--        <plugin>-->
+<!--          <groupId>org.sonatype.plugins</groupId>-->
+<!--          <artifactId>nexus-staging-maven-plugin</artifactId>-->
+<!--          <version>${nexus.staging.maven.plugin.version}</version>-->
+<!--          <extensions>true</extensions>-->
+<!--          <configuration>-->
+<!--            <serverId>sonatype-nexus-staging</serverId>-->
+<!--            <nexusUrl>https://ossrh-staging-api.central.sonatype.com</nexusUrl>-->
+<!--            <autoReleaseAfterClose>true</autoReleaseAfterClose>-->
+<!--          </configuration>-->
+<!--        </plugin>-->
           <plugin>
             <artifactId>maven-deploy-plugin</artifactId>
             <version>3.1.4</version>
@@ -196,15 +196,15 @@
               </execution>
             </executions>
           </plugin>    
-    <!--      <plugin>
+          <plugin>
               <groupId>org.sonatype.central</groupId>
               <artifactId>central-publishing-maven-plugin</artifactId>
               <version>0.8.0</version>
               <extensions>true</extensions>
               <configuration>
-                <publishingServerId>sonatype-nexus</publishingServerId>
+                <publishingServerId>central</publishingServerId>
               </configuration>
-          </plugin> -->         
+          </plugin>          
         <plugin>
           <groupId>com.google.cloud.tools</groupId>
           <artifactId>jib-maven-plugin</artifactId>
