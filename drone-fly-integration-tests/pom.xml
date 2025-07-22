@@ -8,6 +8,7 @@
   </parent>
 
   <artifactId>drone-fly-integration-tests</artifactId>
+  <packaging>jar</packaging>
 
   <dependencies>
     <dependency>

@@ -11,6 +11,7 @@
   <version>1.0.9-SNAPSHOT</version>
   <inceptionYear>2020</inceptionYear>
   <packaging>pom</packaging>
+  <name>drone-fly</name>
 
   <modules>
     <module>drone-fly-core</module>

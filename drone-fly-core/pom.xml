@@ -8,6 +8,7 @@
   </parent>
 
   <artifactId>drone-fly-core</artifactId>
+  <packaging>jar</packaging>
 
   <dependencies>
   <!-- Dependencies for health check -->

@@ -8,6 +8,7 @@
   </parent>
 
   <artifactId>drone-fly-app</artifactId>
+  <packaging>jar</packaging>
 
   <properties>
     <aws.version>1.11.532</aws.version>
