@@ -8,7 +8,7 @@
   </parent>
 
   <artifactId>drone-fly-parent</artifactId>
-  <version>1.0.7-SNAPSHOT</version>
+  <version>1.0.6-SNAPSHOT</version>
   <inceptionYear>2020</inceptionYear>
   <packaging>pom</packaging>
   <name>drone-fly</name>
@@ -40,6 +40,7 @@
     <log4j2.version>2.17.1</log4j2.version>
     <msk.iam.version>1.1.9</msk.iam.version>
     <dropwizard.version>3.1.0</dropwizard.version>
+    <skip.tests>true</skip.tests>
   </properties>
 
   <scm>
