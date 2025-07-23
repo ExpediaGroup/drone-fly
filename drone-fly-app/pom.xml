@@ -4,11 +4,12 @@
   <parent>
     <groupId>com.expediagroup</groupId>
     <artifactId>drone-fly-parent</artifactId>
-    <version>1.0.7-SNAPSHOT</version>
+    <version>1.0.6-SNAPSHOT</version>
   </parent>
 
   <artifactId>drone-fly-app</artifactId>
   <packaging>jar</packaging>
+  <name>${project.groupId}:${project.artifactId}</name>
 
   <properties>
     <aws.version>1.11.532</aws.version>

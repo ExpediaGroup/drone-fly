@@ -8,10 +8,12 @@
   </parent>
 
   <artifactId>drone-fly-parent</artifactId>
-  <version>1.0.7-SNAPSHOT</version>
+  <version>1.0.6-SNAPSHOT</version>
   <inceptionYear>2020</inceptionYear>
   <packaging>pom</packaging>
   <name>drone-fly</name>
+  <url>https://github.com/ExpediaGroup/drone-fly</url>
+
 
   <modules>
     <module>drone-fly-core</module>
