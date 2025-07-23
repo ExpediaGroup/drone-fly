@@ -8,7 +8,7 @@
   </parent>
 
   <artifactId>drone-fly-parent</artifactId>
-  <version>1.0.7-SNAPSHOT</version>
+  <version>1.0.6-SNAPSHOT</version>
   <inceptionYear>2020</inceptionYear>
   <packaging>pom</packaging>
   <name>drone-fly</name>
@@ -236,7 +236,7 @@
           <version>${springframework.boot.version}</version>
           <configuration>
             <mainClass>com.expediagroup.dataplatform.dronefly.app.DroneFly</mainClass>
-            <layout>JAR</layout>
+            <layout>ZIP</layout>
             <requiresUnpack>
               <!-- We are hitting an issue introduced in hive-common-2.1.1 and fixed in https://issues.apache.org/jira/browse/HIVE-17155
                 The HiveConf class tries loading conf (e.g. hive-site.xml) from the uberjar and fails. Unpacking it with

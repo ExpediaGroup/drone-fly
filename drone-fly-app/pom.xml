@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.expediagroup</groupId>
     <artifactId>drone-fly-parent</artifactId>
-    <version>1.0.7-SNAPSHOT</version>
+    <version>1.0.6-SNAPSHOT</version>
   </parent>
 
   <artifactId>drone-fly-app</artifactId>
@@ -132,7 +132,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
-      <plugin>
+      <!--<plugin>
         <groupId>com.google.cloud.tools</groupId>
         <artifactId>jib-maven-plugin</artifactId>
         <configuration>
@@ -140,7 +140,7 @@
             <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
           </container>
         </configuration>
-      </plugin>
+      </plugin>-->
     </plugins>
   </build>
 </project>
