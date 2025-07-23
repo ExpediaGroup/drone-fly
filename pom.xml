@@ -17,7 +17,7 @@
 
   <modules>
     <module>drone-fly-core</module>
-<!--    <module>drone-fly-app</module>-->
+    <module>drone-fly-app</module>
     <module>drone-fly-integration-tests</module>
   </modules>
 
