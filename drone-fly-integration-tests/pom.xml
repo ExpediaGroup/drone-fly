@@ -15,7 +15,7 @@
     <dependency>
       <groupId>com.expediagroup</groupId>
       <artifactId>drone-fly-app</artifactId>
-      <version>${project.version}</version>
+      <version>1.0.5</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
