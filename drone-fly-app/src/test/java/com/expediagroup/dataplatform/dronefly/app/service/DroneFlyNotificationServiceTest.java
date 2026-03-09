@@ -1,16 +1,14 @@
 /**
- * Copyright (C) 2020 Expedia, Inc.
+ * Copyright (C) 2020-2026 Expedia, Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * <p>Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
+ * except in compliance with the License. You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
+ * <p>Unless required by applicable law or agreed to in writing, software distributed under the
+ * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language governing permissions and
  * limitations under the License.
  */
 package com.expediagroup.dataplatform.dronefly.app.service;
@@ -23,12 +21,17 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.expediagroup.apiary.extensions.events.metastore.common.MetaStoreEventsException;
+import com.expediagroup.apiary.extensions.events.metastore.event.ApiaryListenerEvent;
+import com.expediagroup.apiary.extensions.events.metastore.event.ApiaryListenerEventFactory;
+import com.expediagroup.dataplatform.dronefly.app.messaging.MessageReaderAdapter;
+import com.expediagroup.dataplatform.dronefly.app.service.listener.DummyListener;
+import com.expediagroup.dataplatform.dronefly.core.exception.DroneFlyException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.hadoop.hive.conf.HiveConf;
-import org.apache.hadoop.hive.metastore.HiveMetaStore.HMSHandler;
+import org.apache.hadoop.hive.metastore.HMSHandler;
 import org.apache.hadoop.hive.metastore.MetaStoreEventListener;
 import org.apache.hadoop.hive.metastore.api.MetaException;
 import org.apache.hadoop.hive.metastore.api.NoSuchObjectException;
@@ -40,13 +43,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.expediagroup.apiary.extensions.events.metastore.common.MetaStoreEventsException;
-import com.expediagroup.apiary.extensions.events.metastore.event.ApiaryListenerEvent;
-import com.expediagroup.apiary.extensions.events.metastore.event.ApiaryListenerEventFactory;
-import com.expediagroup.dataplatform.dronefly.app.messaging.MessageReaderAdapter;
-import com.expediagroup.dataplatform.dronefly.app.service.listener.DummyListener;
-import com.expediagroup.dataplatform.dronefly.core.exception.DroneFlyException;
-
 @ExtendWith(MockitoExtension.class)
 public class DroneFlyNotificationServiceTest {
   private @Mock MessageReaderAdapter reader;
@@ -54,7 +50,8 @@ public class DroneFlyNotificationServiceTest {
   private @Mock HiveEventConverterService converterService;
 
   private final DummyListener dummyListener = new DummyListener(new HiveConf());
-  private final List<MetaStoreEventListener> metastoreListeners = new ArrayList<MetaStoreEventListener>();
+  private final List<MetaStoreEventListener> metastoreListeners =
+      new ArrayList<MetaStoreEventListener>();
   private DroneFlyNotificationService droneFlyNotificationService;
   private CreateTableEvent createTableEvent;
   private ApiaryListenerEvent apiaryCreateTableEvent;
@@ -66,7 +63,8 @@ public class DroneFlyNotificationServiceTest {
 
     when(reader.read()).thenReturn(apiaryCreateTableEvent);
 
-    droneFlyNotificationService = new DroneFlyNotificationService(reader, converterService, listenerCatalog);
+    droneFlyNotificationService =
+        new DroneFlyNotificationService(reader, converterService, listenerCatalog);
   }
 
   @Test
@@ -111,9 +109,12 @@ public class DroneFlyNotificationServiceTest {
   public void exceptionThrownWhileDeserializingEvent() throws IOException {
     when(reader.read()).thenThrow(new MetaStoreEventsException("Cannot deserialize hive event"));
 
-    DroneFlyException exception = assertThrows(DroneFlyException.class, () -> {
-      droneFlyNotificationService.notifyListeners();
-    });
+    DroneFlyException exception =
+        assertThrows(
+            DroneFlyException.class,
+            () -> {
+              droneFlyNotificationService.notifyListeners();
+            });
 
     assertTrue(exception.getMessage().contains("Cannot unmarshal this event. It will be ignored."));
 
@@ -122,43 +123,61 @@ public class DroneFlyNotificationServiceTest {
   }
 
   @Test
-  public void metaExceptionThrownWhileNotifying() throws MetaException, NoSuchObjectException, IOException {
-    when(converterService.toHiveEvent(Mockito.any())).thenThrow(new MetaException("MetaException is thrown."));
+  public void metaExceptionThrownWhileNotifying()
+      throws MetaException, NoSuchObjectException, IOException {
+    when(converterService.toHiveEvent(Mockito.any()))
+        .thenThrow(new MetaException("MetaException is thrown."));
 
-    DroneFlyException exception = assertThrows(DroneFlyException.class, () -> {
-      droneFlyNotificationService.notifyListeners();
-    });
+    DroneFlyException exception =
+        assertThrows(
+            DroneFlyException.class,
+            () -> {
+              droneFlyNotificationService.notifyListeners();
+            });
 
     assertTrue(
-        exception.getMessage().contains("Hive event was received but Drone Fly failed to notify all the listeners."));
+        exception
+            .getMessage()
+            .contains("Hive event was received but Drone Fly failed to notify all the listeners."));
 
     destroy();
     verify(reader).close();
   }
 
   @Test
-  public void noSuchObjectExceptionThrownWhileNotifying() throws MetaException, NoSuchObjectException, IOException {
+  public void noSuchObjectExceptionThrownWhileNotifying()
+      throws MetaException, NoSuchObjectException, IOException {
     when(converterService.toHiveEvent(Mockito.any()))
         .thenThrow(new NoSuchObjectException("NoSuchObjectException is thrown."));
 
-    DroneFlyException exception = assertThrows(DroneFlyException.class, () -> {
-      droneFlyNotificationService.notifyListeners();
-    });
+    DroneFlyException exception =
+        assertThrows(
+            DroneFlyException.class,
+            () -> {
+              droneFlyNotificationService.notifyListeners();
+            });
 
     assertTrue(
-        exception.getMessage().contains("Hive event was received but Drone Fly failed to notify all the listeners."));
+        exception
+            .getMessage()
+            .contains("Hive event was received but Drone Fly failed to notify all the listeners."));
 
     destroy();
     verify(reader).close();
   }
 
   @Test
-  public void eventNotSupportedByConverter() throws MetaException, NoSuchObjectException, IOException {
-    when(converterService.toHiveEvent(any())).thenThrow(new DroneFlyException("Unsupported event type: DROP_INDEX"));
+  public void eventNotSupportedByConverter()
+      throws MetaException, NoSuchObjectException, IOException {
+    when(converterService.toHiveEvent(any()))
+        .thenThrow(new DroneFlyException("Unsupported event type: DROP_INDEX"));
 
-    DroneFlyException exception = assertThrows(DroneFlyException.class, () -> {
-      droneFlyNotificationService.notifyListeners();
-    });
+    DroneFlyException exception =
+        assertThrows(
+            DroneFlyException.class,
+            () -> {
+              droneFlyNotificationService.notifyListeners();
+            });
     assertTrue(exception.getMessage().contains("Unsupported event type: DROP_INDEX"));
 
     destroy();
@@ -188,13 +207,18 @@ public class DroneFlyNotificationServiceTest {
   }
 
   private CreateTableEvent createTableEvent() throws MetaException {
-    CreateTableEvent event = new CreateTableEvent(
-        HiveTableTestUtils.createPartitionedTable("test_db", "test_table", "s3://test_location"), true,
-        new HMSHandler("test", new HiveConf(), false));
+    CreateTableEvent event =
+        new CreateTableEvent(
+            HiveTableTestUtils.createPartitionedTable(
+                "test_db", "test_table", "s3://test_location"),
+            true,
+            new HMSHandler("test", new HiveConf()),
+            false);
     return event;
   }
 
-  private ApiaryListenerEvent createApiaryListenerEvent(CreateTableEvent event) throws MetaException {
+  private ApiaryListenerEvent createApiaryListenerEvent(CreateTableEvent event)
+      throws MetaException {
     return new ApiaryListenerEventFactory().create(event);
   }
 

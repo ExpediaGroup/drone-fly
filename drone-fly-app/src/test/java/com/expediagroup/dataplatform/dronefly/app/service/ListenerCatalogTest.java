@@ -1,16 +1,14 @@
 /**
- * Copyright (C) 2020 Expedia, Inc.
+ * Copyright (C) 2020-2026 Expedia, Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * <p>Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
+ * except in compliance with the License. You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
+ * <p>Unless required by applicable law or agreed to in writing, software distributed under the
+ * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language governing permissions and
  * limitations under the License.
  */
 package com.expediagroup.dataplatform.dronefly.app.service;
@@ -19,24 +17,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.expediagroup.dataplatform.dronefly.app.service.listener.AnotherDummyListener;
+import com.expediagroup.dataplatform.dronefly.app.service.listener.DummyListener;
+import com.expediagroup.dataplatform.dronefly.core.exception.DroneFlyException;
 import java.util.List;
-
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.metastore.MetaStoreEventListener;
 import org.apache.hadoop.hive.metastore.api.MetaException;
 import org.junit.jupiter.api.Test;
-
-import com.expediagroup.dataplatform.dronefly.app.service.listener.AnotherDummyListener;
-import com.expediagroup.dataplatform.dronefly.app.service.listener.DummyListener;
-import com.expediagroup.dataplatform.dronefly.core.exception.DroneFlyException;
 
 public class ListenerCatalogTest {
   private ListenerCatalog listenerCatalog;
 
   @Test
   public void typical() throws MetaException {
-    String listenerImplList = "com.expediagroup.dataplatform.dronefly.app.service.listener.DummyListener,"
-        + "com.expediagroup.dataplatform.dronefly.app.service.listener.AnotherDummyListener";
+    String listenerImplList =
+        "com.expediagroup.dataplatform.dronefly.app.service.listener.DummyListener,"
+            + "com.expediagroup.dataplatform.dronefly.app.service.listener.AnotherDummyListener";
 
     listenerCatalog = new ListenerCatalog(new HiveConf(), listenerImplList);
     List<MetaStoreEventListener> result = listenerCatalog.getListeners();
@@ -48,35 +45,46 @@ public class ListenerCatalogTest {
 
   @Test
   public void oneListenerProvidedAndNotFound() throws MetaException {
-    String listenerImplList = "com.expediagroup.dataplatform.dronefly.app.service.listener.DummyListener1";
-    DroneFlyException exception = assertThrows(DroneFlyException.class, () -> {
-      listenerCatalog = new ListenerCatalog(new HiveConf(), listenerImplList);
-    });
+    String listenerImplList =
+        "com.expediagroup.dataplatform.dronefly.app.service.listener.DummyListener1";
+    DroneFlyException exception =
+        assertThrows(
+            DroneFlyException.class,
+            () -> {
+              listenerCatalog = new ListenerCatalog(new HiveConf(), listenerImplList);
+            });
 
-    assertTrue(exception
-        .getMessage()
-        .contains(
-            "Failed to instantiate listener named: com.expediagroup.dataplatform.dronefly.app.service.listener.DummyListener1"));
+    assertTrue(
+        exception
+            .getMessage()
+            .contains(
+                "Failed to instantiate listener named: com.expediagroup.dataplatform.dronefly.app.service.listener.DummyListener1"));
   }
 
   @Test
   public void oneOutOfTwoListenersNotFound() throws MetaException {
-    String listenerImplList = "com.expediagroup.dataplatform.dronefly.app.service.listener.DummyListener,"
-        + "com.expediagroup.dataplatform.dronefly.app.service.listener.AnotherDummyListener1";
-    DroneFlyException exception = assertThrows(DroneFlyException.class, () -> {
-      listenerCatalog = new ListenerCatalog(new HiveConf(), listenerImplList);
-    });
+    String listenerImplList =
+        "com.expediagroup.dataplatform.dronefly.app.service.listener.DummyListener,"
+            + "com.expediagroup.dataplatform.dronefly.app.service.listener.AnotherDummyListener1";
+    DroneFlyException exception =
+        assertThrows(
+            DroneFlyException.class,
+            () -> {
+              listenerCatalog = new ListenerCatalog(new HiveConf(), listenerImplList);
+            });
 
-    assertTrue(exception
-        .getMessage()
-        .contains(
-            "Failed to instantiate listener named: com.expediagroup.dataplatform.dronefly.app.service.listener.AnotherDummyListener1"));
+    assertTrue(
+        exception
+            .getMessage()
+            .contains(
+                "Failed to instantiate listener named: com.expediagroup.dataplatform.dronefly.app.service.listener.AnotherDummyListener1"));
   }
 
   @Test
   public void whiteSpacesInTheMiddleOfListenerImplList() throws MetaException {
-    String listenerImplList = "com.expediagroup.dataplatform.dronefly.app.service.listener.DummyListener         ,"
-        + "       com.expediagroup.dataplatform.dronefly.app.service.listener.AnotherDummyListener";
+    String listenerImplList =
+        "com.expediagroup.dataplatform.dronefly.app.service.listener.DummyListener         ,"
+            + "       com.expediagroup.dataplatform.dronefly.app.service.listener.AnotherDummyListener";
     listenerCatalog = new ListenerCatalog(new HiveConf(), listenerImplList);
     List<MetaStoreEventListener> result = listenerCatalog.getListeners();
 
@@ -87,8 +95,9 @@ public class ListenerCatalogTest {
 
   @Test
   public void extraCommaAtTheEndOfListenerImplList() throws MetaException {
-    String listenerImplList = "com.expediagroup.dataplatform.dronefly.app.service.listener.DummyListener,"
-        + "com.expediagroup.dataplatform.dronefly.app.service.listener.AnotherDummyListener,";
+    String listenerImplList =
+        "com.expediagroup.dataplatform.dronefly.app.service.listener.DummyListener,"
+            + "com.expediagroup.dataplatform.dronefly.app.service.listener.AnotherDummyListener,";
     listenerCatalog = new ListenerCatalog(new HiveConf(), listenerImplList);
     List<MetaStoreEventListener> result = listenerCatalog.getListeners();
 
@@ -100,9 +109,12 @@ public class ListenerCatalogTest {
   @Test
   public void emptyListenerImplList() throws MetaException {
     String listenerImplList = "   ";
-    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-      listenerCatalog = new ListenerCatalog(new HiveConf(), listenerImplList);
-    });
+    IllegalArgumentException exception =
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> {
+              listenerCatalog = new ListenerCatalog(new HiveConf(), listenerImplList);
+            });
 
     assertTrue(exception.getMessage().contains("ListenerImplList cannot be null or empty"));
   }
@@ -110,10 +122,12 @@ public class ListenerCatalogTest {
   @Test
   public void nullListenerImplList() throws MetaException {
     String listenerImplList = null;
-    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-      listenerCatalog = new ListenerCatalog(new HiveConf(), listenerImplList);
-    });
+    IllegalArgumentException exception =
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> {
+              listenerCatalog = new ListenerCatalog(new HiveConf(), listenerImplList);
+            });
     assertTrue(exception.getMessage().contains("ListenerImplList cannot be null or empty"));
   }
-
 }
