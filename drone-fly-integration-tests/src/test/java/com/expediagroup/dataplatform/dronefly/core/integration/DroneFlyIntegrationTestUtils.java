@@ -62,7 +62,10 @@ public class DroneFlyIntegrationTestUtils {
     values.add(partitionName + "2");
     StorageDescriptor sd = new StorageDescriptor();
     sd.setStoredAsSubDirectories(false);
-    return new Partition(values, DATABASE, TABLE, 1, 1, sd, buildTableParameters());
+    Partition partition = new Partition(values, DATABASE, TABLE, 1, 1, sd, buildTableParameters());
+    partition.setWriteId(-1);
+    partition.setIsStatsCompliant(false);
+    return partition;
   }
 
   public static Map<String, String> buildTableParameters() {
