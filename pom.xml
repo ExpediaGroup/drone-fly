@@ -30,6 +30,7 @@
     <javadoc.source.version>21</javadoc.source.version>
 
     <!-- Override eg-oss-parent plugin versions for Java 21 compatibility -->
+    <spotless.config.execution.skip>true</spotless.config.execution.skip>
     <jacoco.version>0.8.12</jacoco.version>
     <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
     <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
