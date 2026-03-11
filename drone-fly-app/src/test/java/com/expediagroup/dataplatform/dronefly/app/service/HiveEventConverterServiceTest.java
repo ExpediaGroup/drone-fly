@@ -184,10 +184,6 @@ public class HiveEventConverterServiceTest {
   public void insertEvent() throws MetaException, NoSuchObjectException {
     // Mocking here is necessary because of handler.get_table_req(req).getTable() call in
     // InsertEvent constructor.
-    // We also mock the ApiaryInsertEvent directly because
-    // ApiaryListenerEventFactory.create(InsertEvent)
-    // calls InsertEvent.getDb() which was removed in Hive 4.x (binary incompatibility with Apiary
-    // 8.1.15).
     HMSHandlerFactory hmsHandlerFactory = mock(HMSHandlerFactory.class);
     HMSHandler mockHmsHandler = mock(HMSHandler.class);
     GetTableResult gtr = mock(GetTableResult.class);

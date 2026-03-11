@@ -44,7 +44,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hive.metastore.HMSHandler;
+import org.apache.hadoop.hive.metastore.HiveMetaStore.HMSHandler;
 import org.apache.hadoop.hive.metastore.api.Partition;
 import org.apache.hadoop.hive.metastore.events.AddPartitionEvent;
 import org.apache.hadoop.hive.metastore.events.CreateTableEvent;
@@ -129,7 +129,7 @@ public class DroneFlyIntegrationTest {
         new AddPartitionEvent(buildTable(), buildPartition(), true, hmsHandler);
     kafkaMetaStoreEventListener.onAddPartition(addPartitionEvent);
 
-    CreateTableEvent createTableEvent = new CreateTableEvent(buildTable(), true, hmsHandler, false);
+    CreateTableEvent createTableEvent = new CreateTableEvent(buildTable(), true, hmsHandler);
     kafkaMetaStoreEventListener.onCreateTable(createTableEvent);
 
     await().atMost(5, TimeUnit.SECONDS).until(() -> DummyListener.getNumEvents() > 1);

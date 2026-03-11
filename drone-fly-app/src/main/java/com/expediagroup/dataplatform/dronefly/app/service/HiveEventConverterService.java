@@ -77,8 +77,6 @@ public class HiveEventConverterService {
         {
           ApiaryAlterPartitionEvent alterPartition =
               (ApiaryAlterPartitionEvent) serializableHiveEvent;
-          // Hive 4.x AlterPartitionEvent constructor: (oldPartition, newPartition, table, status,
-          // isTruncateOp, writeId, handler)
           hiveEvent =
               new AlterPartitionEvent(
                   alterPartition.getOldPartition(),
@@ -105,7 +103,6 @@ public class HiveEventConverterService {
       case ON_CREATE_TABLE:
         {
           ApiaryCreateTableEvent createTableEvent = (ApiaryCreateTableEvent) serializableHiveEvent;
-          // Hive 4.x CreateTableEvent constructor: (table, status, handler, isReplicated)
           hiveEvent =
               new CreateTableEvent(
                   createTableEvent.getTable(),
@@ -117,8 +114,6 @@ public class HiveEventConverterService {
       case ON_ALTER_TABLE:
         {
           ApiaryAlterTableEvent alterTableEvent = (ApiaryAlterTableEvent) serializableHiveEvent;
-          // Hive 4.x AlterTableEvent constructor: (oldTable, newTable, isTruncateOp, status,
-          // writeId, handler, isReplicated)
           hiveEvent =
               new AlterTableEvent(
                   alterTableEvent.getOldTable(),
@@ -133,7 +128,6 @@ public class HiveEventConverterService {
       case ON_DROP_TABLE:
         {
           ApiaryDropTableEvent dropTable = (ApiaryDropTableEvent) serializableHiveEvent;
-          // Hive 4.x DropTableEvent constructor: (table, status, deleteData, handler, isReplicated)
           hiveEvent =
               new DropTableEvent(
                   dropTable.getTable(),
@@ -159,8 +153,6 @@ public class HiveEventConverterService {
               new InsertEventRequestData(insert.getFiles());
           insertEventRequestData.setFilesAddedChecksum(insert.getFileChecksums());
 
-          // Hive 4.x InsertEvent constructor: (dbName, catName, tableName, partVals, insertData,
-          // status, handler)
           hiveEvent =
               new InsertEvent(
                   insert.getDatabaseName(),
