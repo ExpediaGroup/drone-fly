@@ -30,7 +30,7 @@ jobs:
     - name: Set up JDK
       uses: actions/setup-java@v4
       with:
-        distribution: 'temurin'
+        distribution: 'corretto'
         java-version: '21'
         java-package: jdk
         # this creates a settings.xml with the following server
