@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2020-2026 Expedia, Inc.
+ * Copyright (C) 2020 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -116,8 +116,8 @@ public class HiveEventConverterService {
       InsertEventRequestData insertEventRequestData = new InsertEventRequestData(insert.getFiles());
       insertEventRequestData.setFilesAddedChecksum(insert.getFileChecksums());
 
-      hiveEvent = new InsertEvent(insert.getDatabaseName(), null, insert.getTableName(), partVals,
-          insertEventRequestData, insert.getStatus(), hmsHandlerFactory.newInstance());
+      hiveEvent = new InsertEvent(insert.getDatabaseName(), null, insert.getTableName(), partVals, insertEventRequestData,
+          insert.getStatus(), hmsHandlerFactory.newInstance());
       break;
     }
     default:
