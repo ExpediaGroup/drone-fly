@@ -1,26 +1,30 @@
 /**
  * Copyright (C) 2020-2026 Expedia, Inc.
  *
- * <p>Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
- * except in compliance with the License. You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * <p>http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * <p>Unless required by applicable law or agreed to in writing, software distributed under the
- * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing permissions and
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
  * limitations under the License.
  */
 package com.expediagroup.dataplatform.dronefly.core.integration;
 
-import com.google.common.collect.Lists;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.hadoop.hive.metastore.api.FieldSchema;
 import org.apache.hadoop.hive.metastore.api.Partition;
 import org.apache.hadoop.hive.metastore.api.StorageDescriptor;
 import org.apache.hadoop.hive.metastore.api.Table;
+
+import com.google.common.collect.Lists;
 
 public class DroneFlyIntegrationTestUtils {
 
@@ -37,19 +41,8 @@ public class DroneFlyIntegrationTestUtils {
     partitions.add(new FieldSchema("a", "string", "comment"));
     partitions.add(new FieldSchema("b", "string", "comment"));
     partitions.add(new FieldSchema("c", "string", "comment"));
-    return new Table(
-        tableName,
-        DATABASE,
-        "me",
-        1,
-        1,
-        1,
-        new StorageDescriptor(),
-        partitions,
-        buildTableParameters(),
-        "originalText",
-        "expandedText",
-        "tableType");
+    return new Table(tableName, DATABASE, "me", 1, 1, 1, new StorageDescriptor(), partitions, buildTableParameters(),
+        "originalText", "expandedText", "tableType");
   }
 
   public static Partition buildPartition() {
@@ -78,4 +71,5 @@ public class DroneFlyIntegrationTestUtils {
   public static String buildQualifiedTableName() {
     return DATABASE + "." + TABLE;
   }
+
 }
