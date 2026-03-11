@@ -27,7 +27,7 @@ and fix the integration tests that broke as a result of the Hive 4.x upgrade.
 | Spotless Maven plugin | 2.4.1 | 2.43.0 (google-java-format 1.19.2, Java 21 compatible) |
 | JaCoCo | 0.8.6 | 0.8.12 |
 | Surefire | 3.0.0-M5 | 3.2.5 |
-| Docker base image | `openjdk:8-jdk` | `eclipse-temurin:21-jre` |
+| Docker base image | `openjdk:8-jdk` | `amazoncorretto:21` |
 
 Dropped explicit version pins for Logback, Log4j, JUnit, Mockito, AssertJ, and
 Dropwizard — these are now managed by the Spring Boot BOM.
@@ -41,7 +41,7 @@ Dropwizard — these are now managed by the Spring Boot BOM.
   reflection
 - Jib container config: added `--add-opens` JVM flags for Hadoop / Hive runtime
 - GitHub Actions workflows (`.github/workflows/*.yml`): upgraded to Java 21,
-  `temurin` distribution, `actions/checkout@v4`, `actions/setup-java@v4`
+  `corretto` distribution, `actions/checkout@v4`, `actions/setup-java@v4`
 - `DataSourceAutoConfiguration` excluded to suppress spurious JDBC auto-config
   pulled in by Hive transitive dependencies
 
