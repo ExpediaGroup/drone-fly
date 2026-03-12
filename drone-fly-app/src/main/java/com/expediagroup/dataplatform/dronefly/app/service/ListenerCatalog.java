@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hive.metastore.utils.JavaUtils;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.metastore.MetaStoreEventListener;
 
@@ -62,7 +61,7 @@ public class ListenerCatalog {
     for (String listenerImpl : listenerImpls) {
       try {
         T listener = (T) Class
-            .forName(listenerImpl.trim(), true, JavaUtils.getClassLoader())
+            .forName(listenerImpl.trim(), true, Thread.currentThread().getContextClassLoader())
             .getConstructor(Configuration.class)
             .newInstance(conf);
         listeners.add(listener);
