@@ -40,7 +40,7 @@
     <maven.shade.plugin.version>3.2.4</maven.shade.plugin.version>
     <jib.maven.plugin.version>3.4.3</jib.maven.plugin.version>
     <docker.from.image>amazoncorretto</docker.from.image>
-    <docker.from.tag>21</docker.from.tag>
+    <docker.from.tag>21-al2023</docker.from.tag>
     <docker.from.reference>${docker.from.image}:${docker.from.tag}</docker.from.reference>
     <docker.registry>expediagroup</docker.registry>
     <docker.to.image>${project.artifactId}</docker.to.image>
