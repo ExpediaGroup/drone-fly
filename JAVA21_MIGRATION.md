@@ -156,6 +156,88 @@ object's `isSet` flags match the deserialized object.
 
 ---
 
+## Commit 3 — Fix `ClassNotFoundException` for external listener JARs in Jib-built images
+
+### Problem
+
+Child images that extend `drone-fly-app` (e.g. `egdp-docker-glue-sync-listener`) download a
+listener JAR into `/app/libs` at Dockerfile build time:
+
+```dockerfile
+FROM expediagroup/drone-fly-app:1.0.9-SNAPSHOT
+RUN cd /app/libs && curl ... apiary-gluesync-listener-8.1.13-all.jar
+```
+
+After upgrading to Java 21 / Hive 4.x, the container failed on startup with:
+
+```
+Caused by: java.lang.ClassNotFoundException:
+    com.expediagroup.apiary.extensions.gluesync.listener.ApiaryGlueSync
+  at jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(...)
+```
+
+### Root cause — two compounding changes
+
+**Change 1 — Hive 2.x → 4.x changed `JavaUtils.getClassLoader()` behavior**
+
+| | Hive 2.x | Hive 4.x |
+|---|---|---|
+| Package | `org.apache.hadoop.hive.common.JavaUtils` | `org.apache.hadoop.hive.metastore.utils.JavaUtils` |
+| `getClassLoader()` returns | `Thread.currentThread().getContextClassLoader()` | JVM `AppClassLoader` |
+
+In a Spring Boot fat-jar launched with `PropertiesLauncher` and `loader.path=lib/`, the thread
+context classloader is Spring Boot's `LaunchedURLClassLoader`, which can find JARs placed in
+`loader.path`. Hive 2.x `JavaUtils` used this classloader, so external listener JARs were
+visible.
+
+Hive 4.x `JavaUtils` returns the plain JVM `AppClassLoader`, which only sees the `-cp`
+argument set at JVM startup — not dynamically placed JARs.
+
+**Change 2 — Jib bakes the classpath at image-build time**
+
+Jib generates an `ENTRYPOINT` with an **explicit list** of dependency JARs in the `-cp`
+argument (determined at `mvn package` time). JARs downloaded by a child Dockerfile's `RUN`
+step land on the filesystem in `/app/libs` but are **never added** to that hardcoded classpath.
+
+Before the migration this was masked: the Hive 2.x `JavaUtils` used `LaunchedURLClassLoader`
+(via PropertiesLauncher), which resolved listener JARs through `loader.path` independently of
+the Jib classpath. After the migration both defences were removed simultaneously.
+
+| | Before migration | After migration |
+|---|---|---|
+| `JavaUtils.getClassLoader()` returns | `LaunchedURLClassLoader` (sees `loader.path`) | `AppClassLoader` (sees only `-cp`) |
+| Listener JAR on classpath? | ✅ Yes (via `loader.path`) | ❌ No (not in Jib `-cp`) |
+
+### Fix — override `ENTRYPOINT` in child Dockerfile with a wildcard classpath
+
+`egdp-docker-glue-sync-listener/Dockerfile` was updated to override the Jib-baked entrypoint
+with one that uses `/app/libs/*`. The JVM expands the wildcard at **startup time**, picking up
+every JAR present in `/app/libs/` — including those downloaded by the `RUN curl` step:
+
+```dockerfile
+ENTRYPOINT ["java",
+    "--add-opens=java.base/java.lang=ALL-UNNAMED",
+    "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED",
+    "--add-opens=java.base/java.io=ALL-UNNAMED",
+    "--add-opens=java.base/java.net=ALL-UNNAMED",
+    "--add-opens=java.base/java.nio=ALL-UNNAMED",
+    "--add-opens=java.base/java.util=ALL-UNNAMED",
+    "--add-opens=java.base/java.util.concurrent=ALL-UNNAMED",
+    "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED",
+    "--add-opens=java.base/java.security=ALL-UNNAMED",
+    "-cp", "/app/resources:/app/classes:/app/libs/*",
+    "com.expediagroup.dataplatform.dronefly.app.DroneFly"]
+```
+
+The `--add-opens` flags match those in the Jib `<jvmFlags>` configuration in the parent
+`pom.xml` so runtime Hadoop/Hive reflection behaviour is preserved.
+
+> **Note for other child images:** Any Dockerfile that extends `drone-fly-app` and adds JARs
+> to `/app/libs` must include this `ENTRYPOINT` override to ensure those JARs are on the
+> classpath.
+
+---
+
 ## Files changed (summary)
 
 ```
