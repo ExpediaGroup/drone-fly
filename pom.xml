@@ -49,6 +49,11 @@
     <dockerhub.url>docker.io</dockerhub.url>
     <msk.iam.version>2.2.0</msk.iam.version>
     <skip.tests>true</skip.tests>
+
+    <!-- Security vulnerability overrides -->
+    <tomcat.version.override>10.1.35</tomcat.version.override>
+    <avro.version.override>1.11.4</avro.version.override>
+    <kerby.version.override>2.0.3</kerby.version.override>
   </properties>
 
   <scm>
@@ -61,6 +66,109 @@
 
   <dependencyManagement>
     <dependencies>
+      <!-- Security overrides — declared before Spring Boot BOM so they take precedence -->
+
+      <!-- CVE-2025-24813 (critical RCE), CVE-2024-56337 — fixed in 10.1.35 -->
+      <dependency>
+        <groupId>org.apache.tomcat.embed</groupId>
+        <artifactId>tomcat-embed-core</artifactId>
+        <version>${tomcat.version.override}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.tomcat.embed</groupId>
+        <artifactId>tomcat-embed-el</artifactId>
+        <version>${tomcat.version.override}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.tomcat.embed</groupId>
+        <artifactId>tomcat-embed-websocket</artifactId>
+        <version>${tomcat.version.override}</version>
+      </dependency>
+
+      <!-- CVE-2023-39410 (critical) and others — fixed in 1.11.x -->
+      <dependency>
+        <groupId>org.apache.avro</groupId>
+        <artifactId>avro</artifactId>
+        <version>${avro.version.override}</version>
+      </dependency>
+
+      <!-- CVE-2023-25613 (critical) — fixed in 2.0.3 -->
+      <dependency>
+        <groupId>org.apache.kerby</groupId>
+        <artifactId>kerb-admin</artifactId>
+        <version>${kerby.version.override}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.kerby</groupId>
+        <artifactId>kerb-client</artifactId>
+        <version>${kerby.version.override}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.kerby</groupId>
+        <artifactId>kerb-common</artifactId>
+        <version>${kerby.version.override}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.kerby</groupId>
+        <artifactId>kerb-core</artifactId>
+        <version>${kerby.version.override}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.kerby</groupId>
+        <artifactId>kerb-crypto</artifactId>
+        <version>${kerby.version.override}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.kerby</groupId>
+        <artifactId>kerb-identity</artifactId>
+        <version>${kerby.version.override}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.kerby</groupId>
+        <artifactId>kerb-server</artifactId>
+        <version>${kerby.version.override}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.kerby</groupId>
+        <artifactId>kerb-simplekdc</artifactId>
+        <version>${kerby.version.override}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.kerby</groupId>
+        <artifactId>kerb-util</artifactId>
+        <version>${kerby.version.override}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.kerby</groupId>
+        <artifactId>kerby-asn1</artifactId>
+        <version>${kerby.version.override}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.kerby</groupId>
+        <artifactId>kerby-config</artifactId>
+        <version>${kerby.version.override}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.kerby</groupId>
+        <artifactId>kerby-pkix</artifactId>
+        <version>${kerby.version.override}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.kerby</groupId>
+        <artifactId>kerby-util</artifactId>
+        <version>${kerby.version.override}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.kerby</groupId>
+        <artifactId>kerby-xdr</artifactId>
+        <version>${kerby.version.override}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.kerby</groupId>
+        <artifactId>token-provider</artifactId>
+        <version>${kerby.version.override}</version>
+      </dependency>
+
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
