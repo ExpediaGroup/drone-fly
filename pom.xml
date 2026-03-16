@@ -39,6 +39,7 @@
     <springframework.boot.version>3.2.12</springframework.boot.version>
     <maven.shade.plugin.version>3.2.4</maven.shade.plugin.version>
     <jib.maven.plugin.version>3.4.3</jib.maven.plugin.version>
+    <tomcat.embeded.version>10.1.50</tomcat.embeded.version>
     <docker.from.image>amazoncorretto</docker.from.image>
     <docker.from.tag>21-al2023</docker.from.tag>
     <docker.from.reference>${docker.from.image}:${docker.from.tag}</docker.from.reference>
@@ -67,6 +68,29 @@
         <version>${springframework.boot.version}</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+        <version>${springframework.boot.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-el</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-websocket</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
     </dependencies>
   </dependencyManagement>
