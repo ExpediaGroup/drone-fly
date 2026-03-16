@@ -26,7 +26,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import org.awaitility.Duration;
+import java.time.Duration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,7 +56,7 @@ public class DroneFlyRunnerTest {
   public void typical() throws IOException, InterruptedException {
     runRunner();
     await()
-        .atMost(Duration.FIVE_SECONDS)
+        .atMost(Duration.ofSeconds(5))
         .untilAsserted(() -> {
               verify(droneFlyNotificationService, atLeast(1)).notifyListeners();
             }
@@ -70,7 +70,7 @@ public class DroneFlyRunnerTest {
     doNothing().doThrow(new RuntimeException()).doNothing().when(droneFlyNotificationService).notifyListeners();
     runRunner();
     await()
-        .atMost(Duration.FIVE_SECONDS)
+        .atMost(Duration.ofSeconds(5))
         .untilAsserted(() -> {
               verify(droneFlyNotificationService, atLeast(3)).notifyListeners();
             }

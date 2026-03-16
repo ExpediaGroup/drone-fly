@@ -42,3 +42,4 @@ core/dependency-reduced-pom.xml
 lib/*
 *.jar
 
+CLAUDE.md

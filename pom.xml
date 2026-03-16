@@ -22,26 +22,32 @@
   </modules>
 
   <properties>
-    <assertj.version>3.12.2</assertj.version>
-    <awaitility.version>3.1.6</awaitility.version>
-    <junit.jupiter.version>5.6.0</junit.jupiter.version>
-    <mockito.version>3.12.4</mockito.version>
-    <springframework.boot.version>2.7.10</springframework.boot.version>
-    <springframework.version>5.3.25</springframework.version>
-    <logback.version>1.2.3</logback.version>
+    <!-- Override eg-oss-parent jdk.version=1.8 to target Java 21 -->
+    <jdk.version>21</jdk.version>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
+    <maven.compiler.release>21</maven.compiler.release>
+    <javadoc.source.version>21</javadoc.source.version>
+
+    <!-- Override eg-oss-parent plugin versions for Java 21 compatibility -->
+    <spotless.config.execution.skip>true</spotless.config.execution.skip>
+    <jacoco.version>0.8.12</jacoco.version>
+    <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
+    <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
+    <maven.spotbugs.plugin.version>4.9.8.2</maven.spotbugs.plugin.version>
+
+    <springframework.boot.version>3.2.12</springframework.boot.version>
     <maven.shade.plugin.version>3.2.4</maven.shade.plugin.version>
     <jib.maven.plugin.version>3.4.3</jib.maven.plugin.version>
-    <docker.from.image>openjdk</docker.from.image>
-    <docker.from.tag>8-jdk</docker.from.tag>
+    <docker.from.image>amazoncorretto</docker.from.image>
+    <docker.from.tag>21-al2023</docker.from.tag>
     <docker.from.reference>${docker.from.image}:${docker.from.tag}</docker.from.reference>
     <docker.registry>expediagroup</docker.registry>
     <docker.to.image>${project.artifactId}</docker.to.image>
     <docker.to.reference>${dockerhub.url}/${docker.registry}/${docker.to.image}:${docker.to.tag}</docker.to.reference>
     <docker.to.tag>${project.version}</docker.to.tag>
     <dockerhub.url>docker.io</dockerhub.url>
-    <log4j2.version>2.17.1</log4j2.version>
-    <msk.iam.version>1.1.9</msk.iam.version>
-    <dropwizard.version>3.1.0</dropwizard.version>
+    <msk.iam.version>2.2.0</msk.iam.version>
     <skip.tests>true</skip.tests>
   </properties>
 
@@ -56,80 +62,11 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-core</artifactId>
-        <version>${springframework.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-context</artifactId>
-        <version>${springframework.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-beans</artifactId>
-        <version>${springframework.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-aop</artifactId>
-        <version>${springframework.version}</version>
-      </dependency>
-      <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
         <version>${springframework.boot.version}</version>
         <type>pom</type>
         <scope>import</scope>
-      </dependency>
-      <dependency>
-        <groupId>ch.qos.logback</groupId>
-        <artifactId>logback-core</artifactId>
-        <version>${logback.version}</version>
-      </dependency>
-
-      <!-- Log4j v2 -->
-      <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-core</artifactId>
-        <version>${log4j2.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-api</artifactId>
-        <version>${log4j2.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-web</artifactId>
-        <version>${log4j2.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-jul</artifactId>
-        <version>${log4j2.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-slf4j-impl</artifactId>
-        <version>${log4j2.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-1.2-api</artifactId>
-        <version>${log4j2.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-to-slf4j</artifactId>
-        <version>${log4j2.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.awaitility</groupId>
-        <artifactId>awaitility</artifactId>
-        <version>${awaitility.version}</version>
-        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -138,29 +75,25 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>${junit.jupiter.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>${mockito.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-junit-jupiter</artifactId>
-      <version>${mockito.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>${assertj.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
-  
+
   <build>
     <pluginManagement>
       <plugins>
@@ -196,10 +129,10 @@
                       <architecture>arm64</architecture>
                       <os>linux</os>
                   </platform>
-              </platforms>  
+              </platforms>
             </from>
             <to>
-              <image>${docker.to.reference}</image>            
+              <image>${docker.to.reference}</image>
               <auth>
                 <username>${DOCKERHUB_USERNAME}</username>
                 <password>${DOCKERHUB_PASSWORD}</password>
@@ -211,6 +144,17 @@
               <ports>
                 <port>${docker.container.port}</port>
               </ports>
+              <jvmFlags>
+                <jvmFlag>--add-opens=java.base/java.lang=ALL-UNNAMED</jvmFlag>
+                <jvmFlag>--add-opens=java.base/java.lang.reflect=ALL-UNNAMED</jvmFlag>
+                <jvmFlag>--add-opens=java.base/java.io=ALL-UNNAMED</jvmFlag>
+                <jvmFlag>--add-opens=java.base/java.net=ALL-UNNAMED</jvmFlag>
+                <jvmFlag>--add-opens=java.base/java.nio=ALL-UNNAMED</jvmFlag>
+                <jvmFlag>--add-opens=java.base/java.util=ALL-UNNAMED</jvmFlag>
+                <jvmFlag>--add-opens=java.base/java.util.concurrent=ALL-UNNAMED</jvmFlag>
+                <jvmFlag>--add-opens=java.base/sun.nio.ch=ALL-UNNAMED</jvmFlag>
+                <jvmFlag>--add-opens=java.base/java.security=ALL-UNNAMED</jvmFlag>
+              </jvmFlags>
             </container>
           </configuration>
         </plugin>
@@ -218,6 +162,33 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
           <version>${maven.shade.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven.compiler.plugin.version}</version>
+          <configuration>
+            <release>21</release>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven.surefire.plugin.version}</version>
+          <configuration>
+            <argLine>
+              @{argLine}
+              --add-opens java.base/java.lang=ALL-UNNAMED
+              --add-opens java.base/java.lang.reflect=ALL-UNNAMED
+              --add-opens java.base/java.io=ALL-UNNAMED
+              --add-opens java.base/java.net=ALL-UNNAMED
+              --add-opens java.base/java.nio=ALL-UNNAMED
+              --add-opens java.base/java.util=ALL-UNNAMED
+              --add-opens java.base/java.util.concurrent=ALL-UNNAMED
+              --add-opens java.base/sun.nio.ch=ALL-UNNAMED
+              --add-opens java.base/java.security=ALL-UNNAMED
+            </argLine>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>com.mycila</groupId>
@@ -247,7 +218,7 @@
                 <artifactId>hive-common</artifactId>
               </dependency>
             </requiresUnpack>
-            <!-- executable=true breaks the sonatype deployments. --> 
+            <!-- executable=true breaks the sonatype deployments. -->
             <executable>false</executable>
             <classifier>exec</classifier>
             <excludeGroupIds>org.mortbay.jetty,org.eclipse.jetty,org.eclipse.jetty.aggregate,org.eclipse.jetty.orbit
@@ -256,10 +227,6 @@
               <exclude>
                 <groupId>org.codehaus.jettison</groupId>
                 <artifactId>jettison</artifactId>
-              </exclude>
-              <exclude>
-                <groupId>javax.servlet</groupId>
-                <artifactId>servlet-api</artifactId>
               </exclude>
             </excludes>
           </configuration>

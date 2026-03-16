@@ -21,12 +21,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.hadoop.hive.conf.HiveConf;
-import org.apache.hadoop.hive.metastore.HiveMetaStore.HMSHandler;
+import org.apache.hadoop.hive.metastore.HMSHandler;
 import org.apache.hadoop.hive.metastore.api.GetTableResult;
-import org.apache.hadoop.hive.metastore.api.InsertEventRequestData;
 import org.apache.hadoop.hive.metastore.api.MetaException;
 import org.apache.hadoop.hive.metastore.api.NoSuchObjectException;
 import org.apache.hadoop.hive.metastore.api.Partition;
@@ -49,6 +50,7 @@ import com.expediagroup.apiary.extensions.events.metastore.event.ApiaryDropParti
 import com.expediagroup.apiary.extensions.events.metastore.event.ApiaryDropTableEvent;
 import com.expediagroup.apiary.extensions.events.metastore.event.ApiaryInsertEvent;
 import com.expediagroup.apiary.extensions.events.metastore.event.ApiaryListenerEventFactory;
+import com.expediagroup.apiary.extensions.events.metastore.event.EventType;
 import com.expediagroup.dataplatform.dronefly.app.service.factory.HMSHandlerFactory;
 
 public class HiveEventConverterServiceTest {
@@ -180,13 +182,24 @@ public class HiveEventConverterServiceTest {
 
     hiveEventConverterService = new HiveEventConverterService(hmsHandlerFactory);
 
-    InsertEvent InsertEvent = createInsertEvent(hmsHandlerFactory);
-    ApiaryInsertEvent apiaryInsertEvent = apiaryListenerEventFactory.create(InsertEvent);
+    // Create ApiaryInsertEvent directly (not via factory) to avoid Hive 3.x/4.x binary incompatibility
+    ApiaryInsertEvent apiaryInsertEvent = mock(ApiaryInsertEvent.class);
+    when(apiaryInsertEvent.getEventType()).thenReturn(EventType.ON_INSERT);
+    when(apiaryInsertEvent.getDatabaseName()).thenReturn(DB_NAME);
+    when(apiaryInsertEvent.getTableName()).thenReturn(TABLE_NAME);
+    Map<String, String> partKeyValues = new LinkedHashMap<>();
+    partKeyValues.put("partition1", "p1");
+    partKeyValues.put("partition2", "p2");
+    when(apiaryInsertEvent.getPartitionKeyValues()).thenReturn(partKeyValues);
+    when(apiaryInsertEvent.getFiles()).thenReturn(Arrays.asList("file:/a/b.txt", "file:/a/c.txt"));
+    when(apiaryInsertEvent.getFileChecksums()).thenReturn(Arrays.asList("123", "456"));
+    when(apiaryInsertEvent.getStatus()).thenReturn(true);
+
     InsertEvent result = (InsertEvent) hiveEventConverterService.toHiveEvent(apiaryInsertEvent);
 
     assertThat(result.getHandler().getName()).isEqualTo(APP_NAME);
-    assertThat(result.getDb()).isEqualTo(DB_NAME);
-    assertThat(result.getTable()).isEqualTo(TABLE_NAME);
+    assertThat(result.getTableObj().getDbName()).isEqualTo(DB_NAME);
+    assertThat(result.getTableObj().getTableName()).isEqualTo(TABLE_NAME);
     assertThat(result.getFiles()).isEqualTo(Arrays.asList("file:/a/b.txt", "file:/a/c.txt"));
     assertThat(result.getFileChecksums()).isEqualTo(Arrays.asList("123", "456"));
   }
@@ -197,17 +210,6 @@ public class HiveEventConverterServiceTest {
     assertThat(result).isNull();
   }
 
-  private InsertEvent createInsertEvent(HMSHandlerFactory hmsHandlerFactory)
-    throws MetaException, NoSuchObjectException {
-    List<String> files = Arrays.asList("file:/a/b.txt", "file:/a/c.txt");
-    List<String> fileChecksums = Arrays.asList("123", "456");
-    InsertEventRequestData insertRequestData = new InsertEventRequestData(files);
-    insertRequestData.setFilesAddedChecksum(fileChecksums);
-    InsertEvent event = new InsertEvent(DB_NAME, TABLE_NAME, PARTITION_VALUES, insertRequestData, true,
-        hmsHandlerFactory.newInstance());
-    return event;
-  }
-
   private AddPartitionEvent createAddPartitionEvent() throws MetaException {
     AddPartitionEvent event = new AddPartitionEvent(hiveTable, partition, true, hmsHandler);
     return event;
@@ -215,7 +217,8 @@ public class HiveEventConverterServiceTest {
 
   private AlterPartitionEvent createAlterPartitionEvent() throws MetaException {
     Partition oldPartition = HiveTableTestUtils.newPartition(hiveTable, PARTITION_VALUES, OLD_PARTITION_LOCATION);
-    AlterPartitionEvent event = new AlterPartitionEvent(oldPartition, partition, hiveTable, true, hmsHandler);
+    // Hive 4.x: (oldPartition, newPartition, table, status, isTruncateOp, writeId, handler)
+    AlterPartitionEvent event = new AlterPartitionEvent(oldPartition, partition, hiveTable, true, false, null, hmsHandler);
     return event;
   }
 
@@ -225,18 +228,21 @@ public class HiveEventConverterServiceTest {
   }
 
   private CreateTableEvent createCreateTableEvent() throws MetaException {
-    CreateTableEvent event = new CreateTableEvent(hiveTable, true, hmsHandler);
+    // Hive 4.x: (table, status, handler, isReplicated)
+    CreateTableEvent event = new CreateTableEvent(hiveTable, true, hmsHandler, false);
     return event;
   }
 
   private AlterTableEvent createAlterTableEvent() throws MetaException {
     Table oldTable = HiveTableTestUtils.createPartitionedTable(DB_NAME, TABLE_NAME, OLD_TABLE_LOCATION);
-    AlterTableEvent event = new AlterTableEvent(oldTable, hiveTable, true, hmsHandler);
+    // Hive 4.x: (oldTable, newTable, isTruncateOp, status, writeId, handler, isReplicated)
+    AlterTableEvent event = new AlterTableEvent(oldTable, hiveTable, false, true, null, hmsHandler, false);
     return event;
   }
 
   private DropTableEvent createDropTableEvent() throws MetaException {
-    DropTableEvent event = new DropTableEvent(hiveTable, true, false, hmsHandler);
+    // Hive 4.x: (table, status, deleteData, handler, isReplicated)
+    DropTableEvent event = new DropTableEvent(hiveTable, true, false, hmsHandler, false);
     return event;
   }
 

@@ -16,7 +16,7 @@
 package com.expediagroup.dataplatform.dronefly.app.service.factory;
 
 import org.apache.hadoop.hive.conf.HiveConf;
-import org.apache.hadoop.hive.metastore.HiveMetaStore.HMSHandler;
+import org.apache.hadoop.hive.metastore.HMSHandler;
 import org.apache.hadoop.hive.metastore.api.MetaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,6 +31,6 @@ public class HMSHandlerFactory {
   }
 
   public HMSHandler newInstance() throws MetaException {
-    return new HMSHandler("drone-fly", hiveConf, false);
+    return new HMSHandler("drone-fly", hiveConf);
   }
 }

@@ -75,7 +75,7 @@ public class HiveEventConverterService {
     case ON_ALTER_PARTITION: {
       ApiaryAlterPartitionEvent alterPartition = (ApiaryAlterPartitionEvent) serializableHiveEvent;
       hiveEvent = new AlterPartitionEvent(alterPartition.getOldPartition(), alterPartition.getNewPartition(),
-          alterPartition.getTable(), alterPartition.getStatus(), hmsHandlerFactory.newInstance());
+          alterPartition.getTable(), alterPartition.getStatus(), false, null, hmsHandlerFactory.newInstance());
       break;
     }
     case ON_DROP_PARTITION: {
@@ -87,19 +87,19 @@ public class HiveEventConverterService {
     case ON_CREATE_TABLE: {
       ApiaryCreateTableEvent createTableEvent = (ApiaryCreateTableEvent) serializableHiveEvent;
       hiveEvent = new CreateTableEvent(createTableEvent.getTable(), createTableEvent.getStatus(),
-          hmsHandlerFactory.newInstance());
+          hmsHandlerFactory.newInstance(), false);
       break;
     }
     case ON_ALTER_TABLE: {
       ApiaryAlterTableEvent alterTableEvent = (ApiaryAlterTableEvent) serializableHiveEvent;
       hiveEvent = new AlterTableEvent(alterTableEvent.getOldTable(), alterTableEvent.getNewTable(),
-          alterTableEvent.getStatus(), hmsHandlerFactory.newInstance());
+          false, alterTableEvent.getStatus(), null, hmsHandlerFactory.newInstance(), false);
       break;
     }
     case ON_DROP_TABLE: {
       ApiaryDropTableEvent dropTable = (ApiaryDropTableEvent) serializableHiveEvent;
       hiveEvent = new DropTableEvent(dropTable.getTable(), dropTable.getStatus(), dropTable.getDeleteData(),
-          hmsHandlerFactory.newInstance());
+          hmsHandlerFactory.newInstance(), false);
       break;
     }
 
@@ -116,7 +116,7 @@ public class HiveEventConverterService {
       InsertEventRequestData insertEventRequestData = new InsertEventRequestData(insert.getFiles());
       insertEventRequestData.setFilesAddedChecksum(insert.getFileChecksums());
 
-      hiveEvent = new InsertEvent(insert.getDatabaseName(), insert.getTableName(), partVals, insertEventRequestData,
+      hiveEvent = new InsertEvent(insert.getDatabaseName(), null, insert.getTableName(), partVals, insertEventRequestData,
           insert.getStatus(), hmsHandlerFactory.newInstance());
       break;
     }

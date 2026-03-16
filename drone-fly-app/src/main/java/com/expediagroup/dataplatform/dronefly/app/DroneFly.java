@@ -19,6 +19,7 @@ import java.util.TimeZone;
 
 import org.springframework.beans.BeansException;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
@@ -27,7 +28,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import com.google.common.annotations.VisibleForTesting;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @EnableConfigurationProperties
 public class DroneFly implements ApplicationContextAware {
 

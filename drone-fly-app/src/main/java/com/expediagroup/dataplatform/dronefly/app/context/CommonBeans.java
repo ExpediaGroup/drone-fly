@@ -78,10 +78,10 @@ public class CommonBeans {
   @Bean
   public MessageReaderAdapter messageReaderAdapter() {
     Properties consumerProperties = getConsumerProperties();
-    KafkaMessageReader delegate = KafkaMessageReaderBuilder.
-        builder(bootstrapServers, topicName, instanceName).
-        withConsumerProperties(consumerProperties).
-        build();
+    KafkaMessageReader delegate = KafkaMessageReaderBuilder
+        .builder(bootstrapServers, topicName, instanceName)
+        .withConsumerProperties(consumerProperties)
+        .build();
     return new MessageReaderAdapter(delegate);
   }
 
@@ -93,4 +93,5 @@ public class CommonBeans {
     });
     return consumerProperties;
   }
+
 }
