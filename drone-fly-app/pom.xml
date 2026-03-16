@@ -15,8 +15,7 @@
     <aws.version>1.11.532</aws.version>
     <s3mock.version>0.2.5</s3mock.version>
     <hive.version>4.0.1</hive.version>
-    <avro.version>1.11.4</avro.version>
-    <kerb.version>2.0.1</kerb.version>
+    <hadoop.version>3.4.2</hadoop.version>
     <docker.container.port>8008</docker.container.port>
   </properties>
 
@@ -98,26 +97,8 @@
           <groupId>org.apache.logging.log4j</groupId>
           <artifactId>log4j-1.2-api</artifactId>
         </exclusion>
-        <exclusion>
-          <groupId>org.apache.avro</groupId>
-          <artifactId>avro</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.kerby</groupId>
-          <artifactId>kerb-admin</artifactId>
-        </exclusion>
       </exclusions>
     </dependency>
-    <dependency>
-      <groupId>org.apache.avro</groupId>
-      <artifactId>avro</artifactId>
-      <version>${avro.version}</version>
-    </dependency>
-    <!--dependency>
-      <groupId>org.apache.kerby</groupId>
-      <artifactId>kerb-admin</artifactId>
-      <version>${kerb.version}</version>
-    </dependency-->
     <dependency>
       <groupId>org.apache.hive</groupId>
       <artifactId>hive-standalone-metastore-server</artifactId>
@@ -190,33 +171,13 @@
     <dependency>
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-client-runtime</artifactId>
-      <version>3.3.6</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.avro</groupId>
-          <artifactId>avro</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.kerby</groupId>
-          <artifactId>kerb-admin</artifactId>
-        </exclusion>
-      </exclusions>
+      <version>${hadoop.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-mapreduce-client-core</artifactId>
-      <version>3.3.6</version>
+      <version>${hadoop.version}</version>
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.avro</groupId>
-          <artifactId>avro</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.kerby</groupId>
-          <artifactId>kerb-admin</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
