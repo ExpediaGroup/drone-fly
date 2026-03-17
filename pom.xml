@@ -47,7 +47,9 @@
     <docker.to.reference>${dockerhub.url}/${docker.registry}/${docker.to.image}:${docker.to.tag}</docker.to.reference>
     <docker.to.tag>${project.version}</docker.to.tag>
     <dockerhub.url>docker.io</dockerhub.url>
+    <dropwizard.version>4.2.28</dropwizard.version>
     <msk.iam.version>2.2.0</msk.iam.version>
+    <hadoop.version>3.4.2</hadoop.version>
     <skip.tests>true</skip.tests>
   </properties>
 
