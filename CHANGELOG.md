@@ -3,10 +3,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [1.0.9] - 2026-03-17
-###
-* Update JDK to Java 21
-* Upgrade Spring version to 3 and Hive to 4.
+## [1.0.9] - 2026-03-25
+### Changed
+* Migrated project to Java 21 and Spring Boot 3.4.x.
+* Upgraded Hive Metastore dependency from `2.3.x` to `4.0.1`.
+* Upgraded Hadoop client runtime to `3.3.6` and Guava to `33.4.0-jre`.
+* Added Java 21 `--add-opens` flags to Jib and Surefire plugin configurations for Hive reflection compatibility.
+* Updated Docker base image to `amazoncorretto:21-al2023`.
 
 ## [1.0.8] - 2025-07-22
 ###

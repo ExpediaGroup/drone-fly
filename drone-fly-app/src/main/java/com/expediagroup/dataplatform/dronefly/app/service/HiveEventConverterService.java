@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2020 Expedia, Inc.
+ * Copyright (C) 2020-2026 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import java.util.Map;
 import org.apache.hadoop.hive.metastore.api.InsertEventRequestData;
 import org.apache.hadoop.hive.metastore.api.MetaException;
 import org.apache.hadoop.hive.metastore.api.NoSuchObjectException;
+import org.apache.hadoop.hive.metastore.utils.MetaStoreUtils;
 import org.apache.hadoop.hive.metastore.events.AddPartitionEvent;
 import org.apache.hadoop.hive.metastore.events.AlterPartitionEvent;
 import org.apache.hadoop.hive.metastore.events.AlterTableEvent;
@@ -116,7 +117,7 @@ public class HiveEventConverterService {
       InsertEventRequestData insertEventRequestData = new InsertEventRequestData(insert.getFiles());
       insertEventRequestData.setFilesAddedChecksum(insert.getFileChecksums());
 
-      hiveEvent = new InsertEvent(insert.getDatabaseName(), null, insert.getTableName(), partVals, insertEventRequestData,
+      hiveEvent = new InsertEvent(MetaStoreUtils.getDefaultCatalog(null), insert.getDatabaseName(), insert.getTableName(), partVals, insertEventRequestData,
           insert.getStatus(), hmsHandlerFactory.newInstance());
       break;
     }

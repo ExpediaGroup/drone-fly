@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2020 Expedia, Inc.
+ * Copyright (C) 2020-2026 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package com.expediagroup.dataplatform.dronefly.app.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -25,8 +26,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.mockito.ArgumentCaptor;
+
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.metastore.HMSHandler;
+import org.apache.hadoop.hive.metastore.api.GetTableRequest;
+import org.apache.hadoop.hive.metastore.utils.MetaStoreUtils;
 import org.apache.hadoop.hive.metastore.api.GetTableResult;
 import org.apache.hadoop.hive.metastore.api.MetaException;
 import org.apache.hadoop.hive.metastore.api.NoSuchObjectException;
@@ -196,6 +201,11 @@ public class HiveEventConverterServiceTest {
     when(apiaryInsertEvent.getStatus()).thenReturn(true);
 
     InsertEvent result = (InsertEvent) hiveEventConverterService.toHiveEvent(apiaryInsertEvent);
+
+    ArgumentCaptor<GetTableRequest> requestCaptor = ArgumentCaptor.forClass(GetTableRequest.class);
+    verify(mockHmsHandler).get_table_req(requestCaptor.capture());
+    assertThat(requestCaptor.getValue().getDbName()).isEqualTo(DB_NAME);
+    assertThat(requestCaptor.getValue().getCatName()).isEqualTo(MetaStoreUtils.getDefaultCatalog(null));
 
     assertThat(result.getHandler().getName()).isEqualTo(APP_NAME);
     assertThat(result.getTableObj().getDbName()).isEqualTo(DB_NAME);
