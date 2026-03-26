@@ -18,7 +18,7 @@ package com.expediagroup.dataplatform.dronefly.app.service.factory;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.apache.hadoop.hive.conf.HiveConf;
-import org.apache.hadoop.hive.metastore.HiveMetaStore.HMSHandler;
+import org.apache.hadoop.hive.metastore.HMSHandler;
 import org.apache.hadoop.hive.metastore.api.MetaException;
 import org.junit.jupiter.api.Test;
 

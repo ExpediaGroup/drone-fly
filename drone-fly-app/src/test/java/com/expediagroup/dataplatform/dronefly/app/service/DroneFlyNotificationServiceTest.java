@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.hadoop.hive.conf.HiveConf;
-import org.apache.hadoop.hive.metastore.HiveMetaStore.HMSHandler;
+import org.apache.hadoop.hive.metastore.HMSHandler;
 import org.apache.hadoop.hive.metastore.MetaStoreEventListener;
 import org.apache.hadoop.hive.metastore.api.MetaException;
 import org.apache.hadoop.hive.metastore.api.NoSuchObjectException;
@@ -190,7 +190,7 @@ public class DroneFlyNotificationServiceTest {
   private CreateTableEvent createTableEvent() throws MetaException {
     CreateTableEvent event = new CreateTableEvent(
         HiveTableTestUtils.createPartitionedTable("test_db", "test_table", "s3://test_location"), true,
-        new HMSHandler("test", new HiveConf(), false));
+        new HMSHandler("test", new HiveConf()), false);
     return event;
   }
 

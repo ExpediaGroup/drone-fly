@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2020 Expedia, Inc.
+ * Copyright (C) 2020-2026 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,7 +55,10 @@ public class DroneFlyIntegrationTestUtils {
     values.add(partitionName + "2");
     StorageDescriptor sd = new StorageDescriptor();
     sd.setStoredAsSubDirectories(false);
-    return new Partition(values, DATABASE, TABLE, 1, 1, sd, buildTableParameters());
+    Partition partition = new Partition(values, DATABASE, TABLE, 1, 1, sd, buildTableParameters());
+    partition.setWriteId(-1);
+    partition.setIsStatsCompliant(false);
+    return partition;
   }
 
   public static Map<String, String> buildTableParameters() {

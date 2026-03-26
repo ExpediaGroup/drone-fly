@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2020-2025 Expedia, Inc.
+ * Copyright (C) 2020-2026 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hive.metastore.HiveMetaStore.HMSHandler;
+import org.apache.hadoop.hive.metastore.HMSHandler;
 import org.apache.hadoop.hive.metastore.api.Partition;
 import org.apache.hadoop.hive.metastore.events.AddPartitionEvent;
 import org.apache.hadoop.hive.metastore.events.CreateTableEvent;
@@ -52,7 +52,7 @@ import org.apache.hadoop.hive.metastore.events.ListenerEvent;
 import org.apache.hadoop.hive.metastore.messaging.EventMessage.EventType;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.awaitility.Duration;
+import java.time.Duration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -110,7 +110,7 @@ public class DroneFlyIntegrationTest {
     initKafkaListener();
 
     executorService.execute(() -> DroneFly.main(new String[] {}));
-    await().atMost(Duration.FIVE_MINUTES).until(DroneFly::isRunning);
+    await().atMost(Duration.ofMinutes(5)).until(DroneFly::isRunning);
   }
 
   @AfterEach
@@ -129,7 +129,7 @@ public class DroneFlyIntegrationTest {
     AddPartitionEvent addPartitionEvent = new AddPartitionEvent(buildTable(), buildPartition(), true, hmsHandler);
     kafkaMetaStoreEventListener.onAddPartition(addPartitionEvent);
 
-    CreateTableEvent createTableEvent = new CreateTableEvent(buildTable(), true, hmsHandler);
+    CreateTableEvent createTableEvent = new CreateTableEvent(buildTable(), true, hmsHandler, false);
     kafkaMetaStoreEventListener.onCreateTable(createTableEvent);
 
     await().atMost(5, TimeUnit.SECONDS).until(() -> DummyListener.getNumEvents() > 1);
