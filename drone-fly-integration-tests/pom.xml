@@ -11,6 +11,11 @@
   <packaging>jar</packaging>
   <name>${project.groupId}:${project.artifactId}</name>
 
+  <properties>
+    <!-- JaCoCo 0.8.13+ is required for Java 25 (class file major version 69) support -->
+    <jacoco.version>0.8.13</jacoco.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.expediagroup</groupId>
@@ -43,7 +48,7 @@
     <dependency>
       <groupId>com.expediagroup.apiary</groupId>
       <artifactId>kafka-metastore-listener</artifactId>
-      <version>8.1.15</version>
+      <version>8.1.18</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -103,5 +108,54 @@
       <version>${dropwizard.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.expediagroup.apiary</groupId>
+      <artifactId>apiary-gluesync-listener</artifactId>
+      <version>8.1.18</version>
+      <classifier>all</classifier>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-log4j12</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.hive</groupId>
+          <artifactId>hive-metastore</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <argLine>
+            @{argLine}
+            --add-opens java.base/java.lang=ALL-UNNAMED
+            --add-opens java.base/java.lang.reflect=ALL-UNNAMED
+            --add-opens java.base/java.io=ALL-UNNAMED
+            --add-opens java.base/java.net=ALL-UNNAMED
+            --add-opens java.base/java.nio=ALL-UNNAMED
+            --add-opens java.base/java.util=ALL-UNNAMED
+            --add-opens java.base/java.util.concurrent=ALL-UNNAMED
+            --add-opens java.base/sun.nio.ch=ALL-UNNAMED
+            --add-opens java.base/java.security=ALL-UNNAMED
+            -Dnet.bytebuddy.experimental=true
+          </argLine>
+          <!-- Fake region so AWSGlueClientBuilder.withRegion() doesn't NPE; fake creds so the
+               SDK credential chain doesn't try EC2 instance metadata and hang. The Glue API call
+               fails fast with an UnknownHostException (no real AWS endpoint at that region). -->
+          <environmentVariables>
+            <AWS_REGION>us-fake-1</AWS_REGION>
+            <AWS_ACCESS_KEY_ID>test</AWS_ACCESS_KEY_ID>
+            <AWS_SECRET_ACCESS_KEY>test</AWS_SECRET_ACCESS_KEY>
+          </environmentVariables>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

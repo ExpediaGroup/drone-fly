@@ -21,6 +21,7 @@ import java.util.Map;
 
 import org.apache.hadoop.hive.metastore.api.FieldSchema;
 import org.apache.hadoop.hive.metastore.api.Partition;
+import org.apache.hadoop.hive.metastore.api.SerDeInfo;
 import org.apache.hadoop.hive.metastore.api.StorageDescriptor;
 import org.apache.hadoop.hive.metastore.api.Table;
 
@@ -41,7 +42,9 @@ public class DroneFlyIntegrationTestUtils {
     partitions.add(new FieldSchema("a", "string", "comment"));
     partitions.add(new FieldSchema("b", "string", "comment"));
     partitions.add(new FieldSchema("c", "string", "comment"));
-    return new Table(tableName, DATABASE, "me", 1, 1, 1, new StorageDescriptor(), partitions, buildTableParameters(),
+    StorageDescriptor sd = new StorageDescriptor();
+    sd.setSerdeInfo(new SerDeInfo("serde", "org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe", new HashMap<>()));
+    return new Table(tableName, DATABASE, "me", 1, 1, 1, sd, partitions, buildTableParameters(),
         "originalText", "expandedText", "tableType");
   }
 
