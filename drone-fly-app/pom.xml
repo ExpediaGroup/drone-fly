@@ -27,7 +27,7 @@
     <dependency>
       <groupId>com.expediagroup.apiary</groupId>
       <artifactId>kafka-metastore-receiver</artifactId>
-      <version>8.1.15</version>
+      <version>${apiary.extensions.version}</version>
       <exclusions>
         <exclusion>
           <groupId>jdk.tools</groupId>

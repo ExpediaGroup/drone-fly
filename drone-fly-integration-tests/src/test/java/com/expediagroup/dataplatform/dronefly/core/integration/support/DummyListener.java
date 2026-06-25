@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.expediagroup.dataplatform.dronefly.core.integration;
+package com.expediagroup.dataplatform.dronefly.core.integration.support;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hive.metastore.MetaStoreEventListener;
@@ -40,7 +40,7 @@ import io.micrometer.core.instrument.Metrics;
 
 public class DummyListener extends MetaStoreEventListener {
 
-  public static final List<ListenerEvent> notifyList = new ArrayList<>();
+  public static final List<ListenerEvent> notifyList = new CopyOnWriteArrayList<>();
   public static final Counter EVENT_COUNT_METRIC = Counter.builder("EVENT_COUNT_CUSTOM_METRIC")
       .register(Metrics.globalRegistry);
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2020 Expedia, Inc.
+ * Copyright (C) 2020-2026 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,22 +17,14 @@ package com.expediagroup.dataplatform.dronefly.app;
 
 import java.util.TimeZone;
 
-import org.springframework.beans.BeansException;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.ConfigurableApplicationContext;
-
-import com.google.common.annotations.VisibleForTesting;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @EnableConfigurationProperties
-public class DroneFly implements ApplicationContextAware {
-
-  private static ConfigurableApplicationContext context;
+public class DroneFly {
 
   public static void main(String[] args) {
     TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
@@ -41,23 +33,5 @@ public class DroneFly implements ApplicationContextAware {
         .properties("server.port:${endpoint.port:8008}")
         .build()
         .run(args);
-  }
-
-  @VisibleForTesting
-  public static boolean isRunning() {
-    return context != null && context.isRunning();
-  }
-
-  @VisibleForTesting
-  public static void stop() {
-    if (context == null) {
-      throw new RuntimeException("Application context has not been started.");
-    }
-    context.close();
-  }
-
-  @Override
-  public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-    context = (ConfigurableApplicationContext) applicationContext;
   }
 }
