@@ -98,23 +98,6 @@
       <version>${dropwizard.version}</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.expediagroup.apiary</groupId>
-      <artifactId>apiary-gluesync-listener</artifactId>
-      <version>${apiary.extensions.version}</version>
-      <classifier>all</classifier>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-log4j12</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.hive</groupId>
-          <artifactId>hive-metastore</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
   </dependencies>
 
   <build>
