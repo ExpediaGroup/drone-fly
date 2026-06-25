@@ -23,8 +23,8 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
-          java-version: '8'
+          distribution: 'corretto'
+          java-version: '17'
           java-package: jdk
           server-id: central # Value of the distributionManagement/repository/id field of the pom.xml
           server-username: SONATYPE_USERNAME # env variable for username in deploy

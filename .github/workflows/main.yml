@@ -30,8 +30,8 @@ jobs:
     - name: Set up JDK
       uses: actions/setup-java@v2
       with:
-        distribution: 'adopt'
-        java-version: 8
+        distribution: 'corretto'
+        java-version: 17
         java-package: jdk
         # this creates a settings.xml with the following server
         settings-path: ${{ github.workspace }}
