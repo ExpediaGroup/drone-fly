@@ -30,6 +30,11 @@ import static org.awaitility.Awaitility.await;
 
 import com.jayway.jsonpath.JsonPath;
 
+/**
+ * Test utilities for asserting that Spring Boot actuator metrics increment as expected when
+ * a function is invoked. Use {@link #springMetricsIncrease} to snapshot metric values before
+ * calling a function, then poll until each metric has risen by the expected delta.
+ */
 public class SpringMetricsUtils {
 
   public record Metric(String name, String statisticName, List<String> tags) {
