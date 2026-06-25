@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2020-2026 Expedia, Inc.
+ * Copyright (C) 2020-2025 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hive.metastore.HMSHandler;
+import org.apache.hadoop.hive.metastore.HiveMetaStore.HMSHandler;
 import org.apache.hadoop.hive.metastore.api.Partition;
 import org.apache.hadoop.hive.metastore.events.AddPartitionEvent;
 import org.apache.hadoop.hive.metastore.events.CreateTableEvent;
@@ -125,7 +125,7 @@ public class DroneFlyIntegrationTest {
       restTemplate,
       () -> {
         kafkaMetaStoreEventListener.onAddPartition(new AddPartitionEvent(buildTable(), buildPartition(), true, hmsHandler));
-        kafkaMetaStoreEventListener.onCreateTable(new CreateTableEvent(buildTable(), true, hmsHandler, false));
+        kafkaMetaStoreEventListener.onCreateTable(new CreateTableEvent(buildTable(), true, hmsHandler));
       },
       entry(metric("kafka.consumer.fetch.manager.records.consumed.total", "COUNT"), 2.0)
     );
