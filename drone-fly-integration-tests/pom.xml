@@ -48,7 +48,7 @@
     <dependency>
       <groupId>com.expediagroup.apiary</groupId>
       <artifactId>kafka-metastore-listener</artifactId>
-      <version>8.1.18</version>
+      <version>${apiary.extensions.version}</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -111,7 +111,7 @@
     <dependency>
       <groupId>com.expediagroup.apiary</groupId>
       <artifactId>apiary-gluesync-listener</artifactId>
-      <version>8.1.18</version>
+      <version>${apiary.extensions.version}</version>
       <classifier>all</classifier>
       <scope>test</scope>
       <exclusions>

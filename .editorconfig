@@ -1,0 +1,19 @@
+[*]
+indent_size=2
+indent_style=space
+charset=utf-8
+
+[*.java]
+continuation_indent_size=2
+trim_trailing_whitespace=true
+insert_final_newline=true
+max_line_length=120
+wildcard_import_limit=999
+ij_java_blank_lines_after_imports=1
+ij_java_blank_lines_before_imports=1
+ij_java_class_count_to_use_import_on_demand=999
+ij_java_names_count_to_use_import_on_demand=999
+ij_java_imports_layout=$java.**,|,$javax.**,|,$org.**,|,$*,$com.**,|,$com.expedia.**,|,$com.hotels.**,java.**,|,javax.**,|,org.**,|,*,|,com.**,|,com.expedia.**,|,com.hotels.**
+ij_java_keep_simple_methods_in_one_line=true
+ij_java_keep_simple_lambdas_in_one_line=true
+ij_java_keep_simple_classes_in_one_line = true
