@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hive.metastore.HMSHandler;
+import org.apache.hadoop.hive.metastore.HiveMetaStore.HMSHandler;
 import org.apache.hadoop.hive.metastore.api.Partition;
 import org.apache.hadoop.hive.metastore.events.AddPartitionEvent;
 import org.apache.hadoop.hive.metastore.events.CreateTableEvent;
@@ -79,9 +79,11 @@ import com.google.common.collect.Lists;
     "apiary.kafka.topic.name=" + TOPIC,
     "instance.name=test",
     "apiary.listener.list=com.expediagroup.dataplatform.dronefly.core.integration.support.DummyListener",
-    "management.defaults.metrics.export.enabled=true",
-    "management.prometheus.metrics.export.enabled=true",
-    "management.endpoints.web.exposure.include=health,info,prometheus,metrics"
+    "management.metrics.export.prometheus.enabled=true",
+    "management.endpoints.web.exposure.include=health,info,prometheus,metrics",
+    // Consumer must start from earliest so messages sent before the consumer joins are not missed
+    // (JVM warm-up after a prior test causes fast context startup, letting fn.run() race ahead)
+    "apiary.messaging.consumer.auto.offset.reset=earliest"
   }
 )
 @EmbeddedKafka(count = 1, controlledShutdown = true, topics = {TOPIC}, partitions = 1)
@@ -125,9 +127,9 @@ public class DroneFlyIntegrationTest {
       restTemplate,
       () -> {
         kafkaMetaStoreEventListener.onAddPartition(new AddPartitionEvent(buildTable(), buildPartition(), true, hmsHandler));
-        kafkaMetaStoreEventListener.onCreateTable(new CreateTableEvent(buildTable(), true, hmsHandler, false));
+        kafkaMetaStoreEventListener.onCreateTable(new CreateTableEvent(buildTable(), true, hmsHandler));
       },
-      entry(metric("kafka.consumer.fetch.manager.records.consumed.total", "COUNT"), 2.0)
+      entry(metric("drone.fly.events.received", "COUNT"), 2.0)
     );
 
     awaitOffsetCommitted(embeddedKafkaBroker, CONSUMER_GROUP, TOPIC, 0, 2L);

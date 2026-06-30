@@ -22,7 +22,6 @@ import java.util.Map;
 import org.apache.hadoop.hive.metastore.api.InsertEventRequestData;
 import org.apache.hadoop.hive.metastore.api.MetaException;
 import org.apache.hadoop.hive.metastore.api.NoSuchObjectException;
-import org.apache.hadoop.hive.metastore.utils.MetaStoreUtils;
 import org.apache.hadoop.hive.metastore.events.AddPartitionEvent;
 import org.apache.hadoop.hive.metastore.events.AlterPartitionEvent;
 import org.apache.hadoop.hive.metastore.events.AlterTableEvent;
@@ -76,7 +75,7 @@ public class HiveEventConverterService {
     case ON_ALTER_PARTITION: {
       ApiaryAlterPartitionEvent alterPartition = (ApiaryAlterPartitionEvent) serializableHiveEvent;
       hiveEvent = new AlterPartitionEvent(alterPartition.getOldPartition(), alterPartition.getNewPartition(),
-          alterPartition.getTable(), alterPartition.getStatus(), false, null, hmsHandlerFactory.newInstance());
+          alterPartition.getTable(), alterPartition.getStatus(), hmsHandlerFactory.newInstance());
       break;
     }
     case ON_DROP_PARTITION: {
@@ -88,19 +87,19 @@ public class HiveEventConverterService {
     case ON_CREATE_TABLE: {
       ApiaryCreateTableEvent createTableEvent = (ApiaryCreateTableEvent) serializableHiveEvent;
       hiveEvent = new CreateTableEvent(createTableEvent.getTable(), createTableEvent.getStatus(),
-          hmsHandlerFactory.newInstance(), false);
+          hmsHandlerFactory.newInstance());
       break;
     }
     case ON_ALTER_TABLE: {
       ApiaryAlterTableEvent alterTableEvent = (ApiaryAlterTableEvent) serializableHiveEvent;
       hiveEvent = new AlterTableEvent(alterTableEvent.getOldTable(), alterTableEvent.getNewTable(),
-          false, alterTableEvent.getStatus(), null, hmsHandlerFactory.newInstance(), false);
+          alterTableEvent.getStatus(), hmsHandlerFactory.newInstance());
       break;
     }
     case ON_DROP_TABLE: {
       ApiaryDropTableEvent dropTable = (ApiaryDropTableEvent) serializableHiveEvent;
       hiveEvent = new DropTableEvent(dropTable.getTable(), dropTable.getStatus(), dropTable.getDeleteData(),
-          hmsHandlerFactory.newInstance(), false);
+          hmsHandlerFactory.newInstance());
       break;
     }
 
@@ -117,7 +116,7 @@ public class HiveEventConverterService {
       InsertEventRequestData insertEventRequestData = new InsertEventRequestData(insert.getFiles());
       insertEventRequestData.setFilesAddedChecksum(insert.getFileChecksums());
 
-      hiveEvent = new InsertEvent(MetaStoreUtils.getDefaultCatalog(null), insert.getDatabaseName(), insert.getTableName(), partVals, insertEventRequestData,
+      hiveEvent = new InsertEvent(insert.getDatabaseName(), insert.getTableName(), partVals, insertEventRequestData,
           insert.getStatus(), hmsHandlerFactory.newInstance());
       break;
     }

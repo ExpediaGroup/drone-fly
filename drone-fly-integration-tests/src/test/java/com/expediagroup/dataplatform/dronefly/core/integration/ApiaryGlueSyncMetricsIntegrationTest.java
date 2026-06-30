@@ -23,7 +23,7 @@ import static com.expediagroup.dataplatform.dronefly.core.integration.support.Dr
 import static com.expediagroup.dataplatform.dronefly.core.integration.support.SpringMetricsUtils.metric;
 import static com.expediagroup.dataplatform.dronefly.core.integration.support.SpringMetricsUtils.springMetricsIncrease;
 
-import org.apache.hadoop.hive.metastore.HMSHandler;
+import org.apache.hadoop.hive.metastore.HiveMetaStore.HMSHandler;
 import org.apache.hadoop.hive.metastore.api.MetaException;
 import org.apache.hadoop.hive.metastore.events.AddPartitionEvent;
 import org.apache.hadoop.hive.metastore.events.CreateTableEvent;
@@ -64,10 +64,9 @@ import com.expediagroup.dataplatform.dronefly.core.integration.support.SpringMet
         "apiary.kafka.topic.name=test-topic",
         "instance.name=test",
         "apiary.listener.list=com.expediagroup.apiary.extensions.gluesync.listener.ApiaryGlueSync",
-        // Spring Boot test defaults disable metric export; re-enable so PrometheusMeterRegistry
-        // is added to Metrics.globalRegistry before ApiaryGlueSync is constructed.
-        "management.defaults.metrics.export.enabled=true",
-        "management.prometheus.metrics.export.enabled=true",
+        // Explicitly enable Prometheus so PrometheusMeterRegistry is added to
+        // Metrics.globalRegistry before ApiaryGlueSync is constructed.
+        "management.metrics.export.prometheus.enabled=true",
         "management.endpoints.web.exposure.include=metrics,prometheus"
     }
 )
@@ -131,7 +130,7 @@ class ApiaryGlueSyncMetricsIntegrationTest {
         .findFirst()
         .orElseThrow();
     try {
-      apiaryGlueSync.onCreateTable(new CreateTableEvent(buildTable(), false, Mockito.mock(HMSHandler.class), false));
+      apiaryGlueSync.onCreateTable(new CreateTableEvent(buildTable(), false, Mockito.mock(HMSHandler.class)));
     } catch (MetaException e) {
       throw new RuntimeException(e);
     }
@@ -155,7 +154,7 @@ class ApiaryGlueSyncMetricsIntegrationTest {
         .findFirst()
         .orElseThrow();
     try {
-      apiaryGlueSync.onCreateTable(new CreateTableEvent(buildTable(), false, Mockito.mock(HMSHandler.class), false));
+      apiaryGlueSync.onCreateTable(new CreateTableEvent(buildTable(), false, Mockito.mock(HMSHandler.class)));
     } catch (MetaException e) {
       throw new RuntimeException(e);
     }
@@ -184,7 +183,7 @@ class ApiaryGlueSyncMetricsIntegrationTest {
         restTemplate,
         () -> {
           try {
-            apiaryGlueSync.onCreateTable(new CreateTableEvent(buildTable(), false, hmsHandler, false));
+            apiaryGlueSync.onCreateTable(new CreateTableEvent(buildTable(), false, hmsHandler));
             apiaryGlueSync.onAddPartition(new AddPartitionEvent(buildTable(), buildPartition(), false, hmsHandler));
           } catch (MetaException e) {
             throw new RuntimeException(e);
@@ -215,7 +214,7 @@ class ApiaryGlueSyncMetricsIntegrationTest {
         restTemplate,
         () -> {
           try {
-            apiaryGlueSync.onCreateTable(new CreateTableEvent(buildTable(), true, hmsHandler, false));
+            apiaryGlueSync.onCreateTable(new CreateTableEvent(buildTable(), true, hmsHandler));
           } catch (MetaException e) {
             throw new RuntimeException(e);
           }

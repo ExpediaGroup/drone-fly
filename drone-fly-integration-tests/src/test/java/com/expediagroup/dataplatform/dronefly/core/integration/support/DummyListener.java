@@ -43,6 +43,8 @@ public class DummyListener extends MetaStoreEventListener {
   public static final List<ListenerEvent> notifyList = new CopyOnWriteArrayList<>();
   public static final Counter EVENT_COUNT_METRIC = Counter.builder("EVENT_COUNT_CUSTOM_METRIC")
       .register(Metrics.globalRegistry);
+  public static final Counter EVENTS_RECEIVED_METRIC = Counter.builder("drone.fly.events.received")
+      .register(Metrics.globalRegistry);
 
   /**
    * @return The last event received, or null if no event was received.
@@ -142,5 +144,6 @@ public class DummyListener extends MetaStoreEventListener {
 
   private void addEvent(ListenerEvent event) {
     notifyList.add(event);
+    EVENTS_RECEIVED_METRIC.increment();
   }
 }
