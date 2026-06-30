@@ -64,10 +64,9 @@ import com.expediagroup.dataplatform.dronefly.core.integration.support.SpringMet
         "apiary.kafka.topic.name=test-topic",
         "instance.name=test",
         "apiary.listener.list=com.expediagroup.apiary.extensions.gluesync.listener.ApiaryGlueSync",
-        // Spring Boot test defaults disable metric export; re-enable so PrometheusMeterRegistry
-        // is added to Metrics.globalRegistry before ApiaryGlueSync is constructed.
-        "management.defaults.metrics.export.enabled=true",
-        "management.prometheus.metrics.export.enabled=true",
+        // Explicitly enable Prometheus so PrometheusMeterRegistry is added to
+        // Metrics.globalRegistry before ApiaryGlueSync is constructed.
+        "management.metrics.export.prometheus.enabled=true",
         "management.endpoints.web.exposure.include=metrics,prometheus"
     }
 )

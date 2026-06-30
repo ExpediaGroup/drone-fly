@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2020-2025 Expedia, Inc.
+ * Copyright (C) 2020-2026 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,8 +79,7 @@ import com.google.common.collect.Lists;
     "apiary.kafka.topic.name=" + TOPIC,
     "instance.name=test",
     "apiary.listener.list=com.expediagroup.dataplatform.dronefly.core.integration.support.DummyListener",
-    "management.defaults.metrics.export.enabled=true",
-    "management.prometheus.metrics.export.enabled=true",
+    "management.metrics.export.prometheus.enabled=true",
     "management.endpoints.web.exposure.include=health,info,prometheus,metrics"
   }
 )
