@@ -80,7 +80,10 @@ import com.google.common.collect.Lists;
     "instance.name=test",
     "apiary.listener.list=com.expediagroup.dataplatform.dronefly.core.integration.support.DummyListener",
     "management.metrics.export.prometheus.enabled=true",
-    "management.endpoints.web.exposure.include=health,info,prometheus,metrics"
+    "management.endpoints.web.exposure.include=health,info,prometheus,metrics",
+    // Consumer must start from earliest so messages sent before the consumer joins are not missed
+    // (JVM warm-up after a prior test causes fast context startup, letting fn.run() race ahead)
+    "apiary.messaging.consumer.auto.offset.reset=earliest"
   }
 )
 @EmbeddedKafka(count = 1, controlledShutdown = true, topics = {TOPIC}, partitions = 1)
