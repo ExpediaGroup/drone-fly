@@ -126,7 +126,7 @@ public class DroneFlyIntegrationTest {
         kafkaMetaStoreEventListener.onAddPartition(new AddPartitionEvent(buildTable(), buildPartition(), true, hmsHandler));
         kafkaMetaStoreEventListener.onCreateTable(new CreateTableEvent(buildTable(), true, hmsHandler));
       },
-      entry(metric("kafka.consumer.fetch.manager.records.consumed.total", "COUNT"), 2.0)
+      entry(metric("drone.fly.events.received", "COUNT"), 2.0)
     );
 
     awaitOffsetCommitted(embeddedKafkaBroker, CONSUMER_GROUP, TOPIC, 0, 2L);
