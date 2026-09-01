@@ -101,11 +101,17 @@ public class CommonBeans {
    * properties given to {@code withConsumerProperties} do not override the builder's own defaults.
    *
    * @param consumerProperties consumer properties bound from {@value #CONSUMER_PROPERTIES_PREFIX}
-   * @return the configured key deserializer, or {@link LongDeserializer} when unset
+   * @return the configured key deserializer, or {@link LongDeserializer} when unset or blank
    */
   static String keyDeserializer(Properties consumerProperties) {
-    return consumerProperties
-        .getProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, LongDeserializer.class.getName());
+    String configured = consumerProperties.getProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG);
+    // Treat blank as unset. A deployment that wires the property from an environment variable with
+    // an empty default would otherwise pass "" straight to the builder, which rejects it and stops
+    // the application from starting.
+    if (configured == null || configured.trim().isEmpty()) {
+      return LongDeserializer.class.getName();
+    }
+    return configured.trim();
   }
 
   private Properties getConsumerProperties() {

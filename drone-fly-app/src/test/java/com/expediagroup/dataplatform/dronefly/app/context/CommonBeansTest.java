@@ -39,4 +39,29 @@ public class CommonBeansTest {
 
     assertThat(CommonBeans.keyDeserializer(consumerProperties)).isEqualTo(StringDeserializer.class.getName());
   }
+
+  @Test
+  public void keyDeserializerTreatsEmptyValueAsUnset() {
+    Properties consumerProperties = new Properties();
+    consumerProperties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "");
+
+    assertThat(CommonBeans.keyDeserializer(consumerProperties)).isEqualTo(LongDeserializer.class.getName());
+  }
+
+  @Test
+  public void keyDeserializerTreatsBlankValueAsUnset() {
+    Properties consumerProperties = new Properties();
+    consumerProperties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "   ");
+
+    assertThat(CommonBeans.keyDeserializer(consumerProperties)).isEqualTo(LongDeserializer.class.getName());
+  }
+
+  @Test
+  public void keyDeserializerTrimsConfiguredValue() {
+    Properties consumerProperties = new Properties();
+    consumerProperties
+        .setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "  " + StringDeserializer.class.getName() + "  ");
+
+    assertThat(CommonBeans.keyDeserializer(consumerProperties)).isEqualTo(StringDeserializer.class.getName());
+  }
 }
