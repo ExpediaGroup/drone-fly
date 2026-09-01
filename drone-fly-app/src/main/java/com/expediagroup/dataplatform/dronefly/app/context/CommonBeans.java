@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2020-2025 Expedia, Inc.
+ * Copyright (C) 2020-2026 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,8 @@ import java.util.stream.Collectors;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.metastore.MetaStoreEventListener;
 import org.apache.hadoop.hive.metastore.api.MetaException;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.common.serialization.LongDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -80,9 +82,30 @@ public class CommonBeans {
     Properties consumerProperties = getConsumerProperties();
     KafkaMessageReader delegate = KafkaMessageReaderBuilder.
         builder(bootstrapServers, topicName, instanceName).
+        withKeyDeserializer(keyDeserializer(consumerProperties)).
         withConsumerProperties(consumerProperties).
         build();
     return new MessageReaderAdapter(delegate);
+  }
+
+  /**
+   * Resolves the deserializer for the Kafka record key.
+   * <p>
+   * The key type is decided by whichever producer writes the topic. The Apiary Hive Metastore
+   * listener writes a {@code Long}, which is the default here, but a topic populated by another
+   * producer may use a different type. Reading a topic with the wrong deserializer fails on every
+   * record, and because the consumer offset does not advance past a record it cannot deserialize,
+   * the service makes no progress at all.
+   * <p>
+   * The value has to be read out of the consumer properties and passed to the builder explicitly:
+   * properties given to {@code withConsumerProperties} do not override the builder's own defaults.
+   *
+   * @param consumerProperties consumer properties bound from {@value #CONSUMER_PROPERTIES_PREFIX}
+   * @return the configured key deserializer, or {@link LongDeserializer} when unset
+   */
+  static String keyDeserializer(Properties consumerProperties) {
+    return consumerProperties
+        .getProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, LongDeserializer.class.getName());
   }
 
   private Properties getConsumerProperties() {

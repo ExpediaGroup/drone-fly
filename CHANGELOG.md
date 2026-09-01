@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.0.10] - 2026-08-31
+### Added
+* Support for configuring the Kafka record key deserializer through `apiary.messaging.consumer.key.deserializer` (environment variable `APIARY_MESSAGING_CONSUMER_KEY_DESERIALIZER`). Defaults to `LongDeserializer`, matching the Apiary Hive Metastore listener, so existing deployments are unchanged. Topics written by a different producer can now be consumed without a `SerializationException`.
+### Changed
+* Upgraded `apiary-extensions` from `8.2.0` to `8.2.5`.
+
 ## [1.0.9] - 2026-03-25
 ### Changed
 * Migrated project to Java 21 and Spring Boot 3.4.x.

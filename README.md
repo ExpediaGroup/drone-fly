@@ -111,6 +111,16 @@ In this case we are sending the properties to Kafka's consumer to be able to con
         --apiary.messaging.consumer.sasl_jaas.config=software.amazon.msk.auth.iam.IAMLoginModule required; \
         --apiary.messaging.consumer.sasl.client.callback.handler.class=software.amazon.msk.auth.iam.IAMClientCallbackHandler
 
+#### Kafka record key deserializer
+
+Drone Fly reads record keys with a `LongDeserializer` by default, matching the key written by the Apiary Hive Metastore listener. A topic populated by a different producer may key its records with another type; reading those with the default fails on every record with `SerializationException: Size of data received by LongDeserializer is not 8`, and because the consumer offset does not advance past a record it cannot be deserialized, Drone Fly stops making progress entirely.
+
+Set the deserializer that matches the producer:
+
+- apiary.messaging.consumer.key.deserializer=org.apache.kafka.common.serialization.StringDeserializer
+
+The record key is not used to process the event, so any deserializer that can read the key is safe.
+
 ## Metrics
 
 Drone Fly exposes standard [JVM and Kafka metrics](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready-metrics-meter) using [Prometheus on Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-features.html#production-ready-metrics-export-prometheus) endpoint `/actuator/prometheus`.
